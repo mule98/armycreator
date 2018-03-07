@@ -4,7 +4,7 @@ import armybuilder.domain.Army;
 import armybuilder.domain.ArmyRepository;
 import armybuilder.domain.Name;
 
-import java.util.Optional;
+import java.util.List;
 
 public class ArmyReader {
 
@@ -12,7 +12,7 @@ public class ArmyReader {
 
 	public ArmyReader(ArmyRepository armyRepository) {this.armyRepository = armyRepository;}
 
-	public Optional<Army> findByName(String name) {
+    public List<Army> findByName(String name) {
 		return armyRepository.findByName(new Name(name));
 	}
 }

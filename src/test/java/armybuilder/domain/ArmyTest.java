@@ -9,7 +9,7 @@ class ArmyTest {
 
 	@Test
 	public void addUnit() {
-		Army army = new Army(new Name("toto"));
+        Army army = new Army(new Name("toto"), ArmyId.next());
 
 		Unit unit = new Unit();
 		army.add(unit);
@@ -35,7 +35,7 @@ class ArmyTest {
 
 	@Test
 	public void addUnitTwice() {
-		Army army = new Army(new Name("toto"));
+        Army army = new Army(new Name("toto"), ArmyId.next());
 
 		Unit unit = new Unit();
 		army.add(unit);

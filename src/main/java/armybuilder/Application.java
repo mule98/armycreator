@@ -1,13 +1,12 @@
 package armybuilder;
 
 import armybuilder.domain.ArmyRepository;
-import armybuilder.domain.events.EventStore;
-import armybuilder.infra.projections.ArmyReader;
-import armybuilder.domain.command.CommandInterpreter;
+import armybuilder.domain.command.ArmyService;
+import armybuilder.domain.events.DomainEventPublisher;
 
 public class Application {
 	private ArmyRepository armyRepository = new ArmyRepository();
-	private EventStore eventSource = new EventStore();
+	private DomainEventPublisher domainEventPublisher = new DomainEventPublisher();
 
 	private Application(){}
 
@@ -15,11 +14,11 @@ public class Application {
 		return new Application();
 	}
 
-	public CommandInterpreter getService() {
-		return new CommandInterpreter(eventSource);
+	public ArmyService getService() {
+		return new ArmyService(armyRepository);
 	}
 
-	public ArmyReader getReader() {
-		return new ArmyReader(this.armyRepository);
+	public ArmyRepository getReader() {
+		return this.armyRepository;
 	}
 }

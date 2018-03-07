@@ -1,36 +1,51 @@
 package armybuilder;
 
 import armybuilder.domain.Army;
+import armybuilder.domain.ArmyId;
 import armybuilder.domain.Name;
+import armybuilder.domain.command.ArmyService;
 import armybuilder.domain.command.CreateArmy;
-import armybuilder.domain.command.CommandInterpreter;
+import armybuilder.domain.command.RenameArmy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Optional;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ArmyStory {
 
 	Application application;
-	private CommandInterpreter commandInterpreter;
+	private ArmyService armyService;
 
 	@BeforeEach
 	public void beforeEach(){
 		application = Application.start();
-		commandInterpreter = application.getService();
+		armyService = application.getService();
 	}
+
 
 	@Test
 	public void createArmy() {
 
-		application.getService().createArmy(new CreateArmy(new Name("New army")));
-		Optional<Army> army = application.getReader().findByName("New army");
-		assertTrue(army.isPresent());
-		assertEquals("New army", army.get().name());
+		Name new_army = new Name("New army");
+		ArmyId armyId = application.getService().createArmy(new CreateArmy(new_army));
+		Army army = application.getReader().getById(armyId);
+		assertEquals(new_army, army.name());
+		assertEquals(armyId, army.id);
 
 	}
 
+	@Test
+	public void renameArmy() {
+
+		Name name = new Name("New army");
+		ArmyId armyId = application.getService().createArmy(new CreateArmy(name));
+		List<Army> army = application.getReader().findByName(name);
+
+		Name name_modified = new Name("name modified");
+		application.getService().rename(new RenameArmy(army.get(0).id, name_modified));
+		assertEquals(name_modified, army.get(0).name());
+
+	}
 }
