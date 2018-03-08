@@ -9,27 +9,25 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ArmyRepositoryTest {
 
-	ArmyRepository repository = new ArmyRepository();
+    ArmyRepository repository = new ArmyRepository();
 
-	@Test
-	void findByName() {
+    @Test
+    void findByName() {
 
-		Name name = new Name("toto");
-		Army army = new Army(name, ArmyId.next());
-		repository.save(army);
+        Name name = new Name("toto");
+        new Army(name, ArmyId.next());
 
-		List<Army> result = repository.findByName(name);
-		assertEquals(name, result.get(0).name());
-	}
+        List<Army> result = repository.findByName(name);
+        assertEquals(name, result.get(0).name());
+    }
 
-	@Test
-	void findByNameDontFind() {
+    @Test
+    void findByNameDontFind() {
 
-		Name name = new Name("toto");
-		Army army = new Army(new Name("false"), ArmyId.next());
-		repository.save(army);
+        Name name = new Name("toto");
+        new Army(new Name("false"), ArmyId.next());
 
-		List<Army> result = repository.findByName(name);
-		assertTrue(result.isEmpty());
-	}
+        List<Army> result = repository.findByName(name);
+        assertTrue(result.isEmpty());
+    }
 }

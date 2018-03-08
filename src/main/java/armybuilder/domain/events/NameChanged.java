@@ -15,6 +15,6 @@ public class NameChanged implements DomainEvent {
 
     @Override
     public void apply(Army army) {
-        army.applyChange(this);
+        army.applyChange(this, false);
     }
 }

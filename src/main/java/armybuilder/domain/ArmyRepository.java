@@ -12,10 +12,6 @@ public class ArmyRepository {
         return eventStore().getAllIds().map(this::getById).filter(t -> t.name() == name).collect(Collectors.toList());
     }
 
-    public void save(Army army) {
-        army.events().forEach(t -> eventStore().insertEvent(army.id, t));
-    }
-
     private EventStore eventStore() {
         return EventStore.instance();
     }

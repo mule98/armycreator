@@ -45,6 +45,7 @@ public class ArmyStory {
 
 		Name name_modified = new Name("name modified");
 		application.getService().rename(new RenameArmy(army.get(0).id, name_modified));
+		army = application.getReader().findByName(name_modified);
 		assertEquals(name_modified, army.get(0).name());
 
 	}

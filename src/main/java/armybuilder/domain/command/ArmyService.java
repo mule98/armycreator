@@ -15,13 +15,11 @@ public class ArmyService {
 
     public ArmyId createArmy(CreateArmy createArmy) {
         Army army = new Army(createArmy.name, ArmyId.next());
-        armyRepository.save(army);
         return army.id;
     }
 
     public void rename(RenameArmy renameArmy) {
         Army army = armyRepository.getById(renameArmy.id);
-        army.applyChange(new NameChanged(renameArmy.name));
-        armyRepository.save(army);
+        army.applyChange(new NameChanged(renameArmy.name), true);
     }
 }

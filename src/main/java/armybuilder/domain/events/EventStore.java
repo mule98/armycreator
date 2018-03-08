@@ -46,4 +46,8 @@ public class EventStore {
     public Stream<ArmyId> getAllIds() {
         return eventsById.keySet().stream();
     }
+
+    public void insertEvents(ArmyId id, DomainEvent event) {
+        eventsById.get(id).add(event);
+    }
 }

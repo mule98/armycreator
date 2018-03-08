@@ -9,5 +9,4 @@ public interface DomainEvent {
     EventType type();
 
     void apply(Army army);
-
 }
