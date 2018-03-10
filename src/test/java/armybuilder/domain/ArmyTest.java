@@ -1,5 +1,6 @@
 package armybuilder.domain;
 
+import armybuilder.domain.events.ArmyCreated;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -9,7 +10,7 @@ class ArmyTest {
 
 	@Test
 	public void addUnit() {
-        Army army = new Army(new Name("toto"), ArmyId.next());
+		Army army = new Army().applyChange(new ArmyCreated(null, ArmyId.next()));
 
 		Unit unit = new Unit();
 		army.add(unit);
@@ -35,10 +36,10 @@ class ArmyTest {
 
 	@Test
 	public void addUnitTwice() {
-        Army army = new Army(new Name("toto"), ArmyId.next());
+		Army army = new Army().applyChange(new ArmyCreated(null, ArmyId.next()));
 
 		Unit unit = new Unit();
-		army.add(unit);
+		army = army.add(unit);
 
 		assertTrue(army.units().allMatch(t -> t.equals(unit)));
 		assertEquals(1, army.units().count());

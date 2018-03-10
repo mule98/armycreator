@@ -4,9 +4,18 @@ import armybuilder.domain.Army;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 
 @Immutable
-public interface DomainEvent {
+public abstract class DomainEvent {
 
-    EventType type();
+    public final Army apply(Army army, boolean newEvent) {
+        Army result = applyChange(army);
+        if (newEvent) {
+            EventBus.instance()
+                    .publish(this);
+        }
+        return result;
+    }
 
-    void apply(Army army);
+    public abstract Army applyChange(Army event);
+
+
 }

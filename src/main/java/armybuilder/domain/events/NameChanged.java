@@ -1,20 +1,21 @@
 package armybuilder.domain.events;
 
 import armybuilder.domain.Army;
+import armybuilder.domain.ArmyId;
 import armybuilder.domain.Name;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 import lombok.Data;
 
 @Data
-public class NameChanged implements DomainEvent {
+@Immutable
+public class NameChanged extends DomainEvent {
+
     public final Name name;
+    public final ArmyId armyId;
+
 
     @Override
-    public EventType type() {
-        return EventType.ARMY;
-    }
-
-    @Override
-    public void apply(Army army) {
-        army.applyChange(this, false);
+    public Army applyChange(Army event) {
+        return event.applyChange(this);
     }
 }

@@ -1,5 +1,7 @@
 package armybuilder.domain;
 
+import armybuilder.domain.events.ArmyCreated;
+import armybuilder.domain.events.NameChanged;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -15,7 +17,7 @@ class ArmyRepositoryTest {
     void findByName() {
 
         Name name = new Name("toto");
-        new Army(name, ArmyId.next());
+        new ArmyCreated(name, ArmyId.next()).apply(new Army(), true);
 
         List<Army> result = repository.findByName(name);
         assertEquals(name, result.get(0).name());
@@ -24,10 +26,10 @@ class ArmyRepositoryTest {
     @Test
     void findByNameDontFind() {
 
-        Name name = new Name("toto");
-        new Army(new Name("false"), ArmyId.next());
+        Army army = new Army().applyChange(new ArmyCreated(new Name("toto"), ArmyId.next()));
+        army.applyChange(new NameChanged(new Name("other name")));
 
-        List<Army> result = repository.findByName(name);
+        List<Army> result = repository.findByName(new Name("toto"));
         assertTrue(result.isEmpty());
     }
 }

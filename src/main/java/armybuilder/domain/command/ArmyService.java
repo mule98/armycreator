@@ -3,6 +3,7 @@ package armybuilder.domain.command;
 import armybuilder.domain.Army;
 import armybuilder.domain.ArmyId;
 import armybuilder.domain.ArmyRepository;
+import armybuilder.domain.events.ArmyCreated;
 import armybuilder.domain.events.NameChanged;
 
 public class ArmyService {
@@ -14,12 +15,13 @@ public class ArmyService {
     }
 
     public ArmyId createArmy(CreateArmy createArmy) {
-        Army army = new Army(createArmy.name, ArmyId.next());
-        return army.id;
+        ArmyCreated armyCreated = new ArmyCreated(createArmy.name, ArmyId.next());
+        return armyCreated.apply(new Army(), true)
+                          .getId();
     }
 
     public void rename(RenameArmy renameArmy) {
         Army army = armyRepository.getById(renameArmy.id);
-        army.applyChange(new NameChanged(renameArmy.name), true);
+        new NameChanged(renameArmy.name).apply(army, true);
     }
 }

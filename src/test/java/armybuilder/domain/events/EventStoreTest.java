@@ -1,5 +1,6 @@
 package armybuilder.domain.events;
 
+import armybuilder.domain.ArmyId;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -8,12 +9,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class EventStoreTest {
 
 
-    private DomainEventPublisher publisher = new DomainEventPublisher();
 
     @Test
     public void testStoreEvent() {
-        DomainEvent domainEvent = Mockito.mock(DomainEvent.class);
-        publisher.publish(domainEvent);
+        NameChanged domainEvent = Mockito.mock(NameChanged.class);
+        EventStore.instance()
+                  .insertEvent(ArmyId.next(), domainEvent);
 
         assertEquals(1, EventStore.instance().getAllEvents().count());
     }

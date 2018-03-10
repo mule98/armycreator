@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 public class EventStore {
 
-    public static final EventStore instance = new EventStore();
+    private final static EventStore instance = new EventStore();
     private Map<ArmyId, LinkedList<DomainEvent>> eventsById = new HashMap<ArmyId, LinkedList<DomainEvent>>() {
         @Override
         public LinkedList<DomainEvent> get(Object key) {
@@ -25,10 +25,6 @@ public class EventStore {
     private EventStore() {
     }
 
-    public static EventStore instance() {
-        return instance;
-    }
-
     public Stream<DomainEvent> getAllEvents() {
         return eventsById.values().stream().flatMap(LinkedList::stream);
     }
@@ -37,10 +33,8 @@ public class EventStore {
         eventsById.get(id).add(event);
     }
 
-    public Stream<DomainEvent> getAllEvents(ArmyId id) {
-        LinkedList<DomainEvent> events = eventsById.get(id);
-        if (events == null) return Stream.empty();
-        else return events.stream();
+    public static EventStore instance() {
+        return instance;
     }
 
     public Stream<ArmyId> getAllIds() {
@@ -49,5 +43,11 @@ public class EventStore {
 
     public void insertEvents(ArmyId id, DomainEvent event) {
         eventsById.get(id).add(event);
+    }
+
+    public LinkedList<DomainEvent> getAllEvents(ArmyId id) {
+        LinkedList<DomainEvent> events = eventsById.get(id);
+        if (events == null) return new LinkedList<>();
+        else return events;
     }
 }
