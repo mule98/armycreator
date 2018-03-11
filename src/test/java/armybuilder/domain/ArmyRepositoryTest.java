@@ -20,14 +20,16 @@ class ArmyRepositoryTest {
         new ArmyCreated(name, ArmyId.next()).apply(new Army(), true);
 
         List<Army> result = repository.findByName(name);
-        assertEquals(name, result.get(0).name());
+        assertEquals(name,
+                     result.get(0)
+                           .name());
     }
 
     @Test
     void findByNameDontFind() {
 
         Army army = new Army().applyChange(new ArmyCreated(new Name("toto"), ArmyId.next()));
-        army.applyChange(new NameChanged(new Name("other name")));
+        army.applyChange(new NameChanged(new Name("other name"), army.getId()));
 
         List<Army> result = repository.findByName(new Name("toto"));
         assertTrue(result.isEmpty());

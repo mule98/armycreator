@@ -22,6 +22,6 @@ public class ArmyService {
 
     public void rename(RenameArmy renameArmy) {
         Army army = armyRepository.getById(renameArmy.id);
-        new NameChanged(renameArmy.name).apply(army, true);
+        new NameChanged(renameArmy.name, renameArmy.id).apply(army, true);
     }
 }
