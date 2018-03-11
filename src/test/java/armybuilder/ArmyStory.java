@@ -3,9 +3,9 @@ package armybuilder;
 import armybuilder.domain.Army;
 import armybuilder.domain.ArmyId;
 import armybuilder.domain.Name;
-import armybuilder.domain.command.ArmyService;
 import armybuilder.domain.command.CreateArmy;
 import armybuilder.domain.command.RenameArmy;
+import armybuilder.domain.events.EventStore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,49 +15,64 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ArmyStory {
 
-	Application application;
-	private ArmyService armyService;
+	private Application application;
 
 	@BeforeEach
-	public void beforeEach(){
-		application = Application.start();
-		armyService = application.getService();
+	public void beforeEach() {
+		application = Application.start(new EventStore());
 	}
 
-
 	@Test
-	public Army createArmy() {
+	public void createArmyTest() {
 
-		Name new_army = new Name("New army");
-		ArmyId armyId = application.getService().createArmy(new CreateArmy(new_army));
-		Army army = application.getReader().getById(armyId);
-		assertEquals(new_army, army.name());
-		assertEquals(armyId, army.getId());
+		Name name = new Name("New army");
+		ArmyId armyId = createArmy(name);
 
-		return army;
+
+		Army army
+				= application.getReader().getById(armyId);
+		assertEquals(name, army.name());
+
+	}
+
+	private ArmyId createArmy(Name new_army) {
+		return application.getService().createArmy(new CreateArmy(new_army));
 	}
 
 	@Test
 	public void renameArmy() {
 
 		Name name = new Name("New army");
-		ArmyId armyId = application.getService().createArmy(new CreateArmy(name));
+		ArmyId armyId = createArmy(name);
 
 		Name name_modified = new Name("name modified");
-		application.getService()
-				   .rename(new RenameArmy(armyId, name_modified));
+		renameArmy(armyId, name_modified);
 		List<Army> armies = application.getReader()
 									   .findByName(name_modified);
 		assertEquals(name_modified,
-					 armies.get(0)
-						   .name());
+				armies.get(0)
+					  .name());
 
 	}
 
+	private void renameArmy(ArmyId armyId, Name name_modified) {
+		application.getService()
+				   .rename(new RenameArmy(armyId, name_modified));
+	}
+
 	@Test
-	public void addUnitToArmy() {
-		Army armyId = createArmy();
+	public Army createArmy() {
 
+		Name new_army = new Name("New army");
+		ArmyId armyId = createArmy(new_army);
+		Army army = getArmy(armyId);
+		assertEquals(new_army, army.name());
+		assertEquals(armyId, army.getId());
 
+		return army;
+	}
+
+	private Army getArmy(ArmyId armyId) {
+		return application.getReader().getById(armyId);
 	}
 }

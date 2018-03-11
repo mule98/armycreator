@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class EventStore {
+public class EventStore implements DomainEventListener {
 
     private final static EventStore instance = new EventStore();
     private Map<ArmyId, LinkedList<DomainEvent>> eventsById = new HashMap<ArmyId, LinkedList<DomainEvent>>() {
@@ -22,7 +22,7 @@ public class EventStore {
         }
     };
 
-    private EventStore() {
+    public EventStore() {
     }
 
     public Stream<DomainEvent> getAllEvents() {
@@ -41,13 +41,14 @@ public class EventStore {
         return eventsById.keySet().stream();
     }
 
-    public void insertEvents(ArmyId id, DomainEvent event) {
-        eventsById.get(id).add(event);
-    }
-
-    public LinkedList<DomainEvent> getAllEvents(ArmyId id) {
+	public LinkedList<DomainEvent> getAllEvents(ArmyId id) {
         LinkedList<DomainEvent> events = eventsById.get(id);
         if (events == null) return new LinkedList<>();
         else return events;
     }
+
+	@Override
+	public void propagate(DomainEvent event) {
+		insertEvent(event.armyId, event);
+	}
 }

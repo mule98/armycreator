@@ -20,9 +20,7 @@ public class Army {
     @NonNull
     private ArmyId id;
     @NonNull
-    @Builder.Default
     private Set<Unit> units = Collections.emptySet();
-    @Builder.Default
     private Name name = null;
 
     public Army applyChange(ArmyCreated armyCreated) {
@@ -36,8 +34,7 @@ public class Army {
 
 
     public Army add(Unit unit) {
-        HashSet<Unit> tmpUnits = new HashSet<>();
-        tmpUnits.addAll(tmpUnits);
+		HashSet<Unit> tmpUnits = new HashSet<>(units);
         tmpUnits.add(unit);
         return withUnits(Collections.unmodifiableSet(tmpUnits));
     }

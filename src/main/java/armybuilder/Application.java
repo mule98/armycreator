@@ -2,16 +2,22 @@ package armybuilder;
 
 import armybuilder.domain.ArmyRepository;
 import armybuilder.domain.command.ArmyService;
-import armybuilder.domain.events.DomainEventPublisher;
+import armybuilder.domain.events.EventBus;
+import armybuilder.domain.events.EventStore;
 
 public class Application {
-	private ArmyRepository armyRepository = new ArmyRepository();
-	private DomainEventPublisher domainEventPublisher = new DomainEventPublisher();
+	private ArmyRepository armyRepository;
+	private EventStore eventStore;
 
-	private Application(){}
+	private Application(EventStore eventStore) {
+		this.eventStore = eventStore;
+		armyRepository = new ArmyRepository(this.eventStore);
+		EventBus.instance().subscribe(eventStore);
+	}
 
-	public static Application start() {
-		return new Application();
+	public static Application start(EventStore eventStore) {
+
+		return new Application(eventStore);
 	}
 
 	public ArmyService getService() {

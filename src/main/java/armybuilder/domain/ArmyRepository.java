@@ -10,26 +10,29 @@ import java.util.stream.Collectors;
 public class ArmyRepository {
 
 
-    public List<Army> findByName(Name name) {
-        return eventStore().getAllIds()
-                           .map(this::getById)
-                           .filter(t -> t.name() == name)
-                           .collect(Collectors.toList());
-    }
+	private EventStore eventStore;
 
-    private EventStore eventStore() {
-        return EventStore.instance();
-    }
+	public ArmyRepository(EventStore eventStore) {
 
-    public Army getById(ArmyId id) {
-        Army army = new Army();
-        LinkedList<DomainEvent> allEvents = eventStore().getAllEvents(id);
-        if (allEvents.isEmpty()) {
-            throw new RuntimeException("No army found for " + id);
-        }
-        for (DomainEvent domainEvent : allEvents) {
-            army = domainEvent.apply(army, false);
-        }
-        return army;
-    }
+		this.eventStore = eventStore;
+	}
+
+	public List<Army> findByName(Name name) {
+		return eventStore.getAllIds()
+						 .map(this::getById)
+						 .filter(t -> t.name() == name)
+						 .collect(Collectors.toList());
+	}
+
+	public Army getById(ArmyId id) {
+		Army army = new Army();
+		LinkedList<DomainEvent> allEvents = eventStore.getAllEvents(id);
+		if (allEvents.isEmpty()) {
+			throw new RuntimeException("No army found for " + id);
+		}
+		for (DomainEvent domainEvent : allEvents) {
+			army = domainEvent.apply(army, false);
+		}
+		return army;
+	}
 }

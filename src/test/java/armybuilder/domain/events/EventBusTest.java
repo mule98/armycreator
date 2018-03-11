@@ -1,16 +1,31 @@
 package armybuilder.domain.events;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 class EventBusTest {
 
-    @Test
-    void publish() {
-        EventBus eventBus = EventBus.instance();
+	@Test
+	void publish() {
+		EventBus eventBus = EventBus.instance();
 
-        DomainEvent receivedEvent;
-        eventBus.subscribe(t -> receivedEvent = t);
+		TestListener listener = new TestListener();
+		eventBus.subscribe(listener);
+		DomainEvent event = Mockito.mock(DomainEvent.class);
+		EventBus.instance().publish(event);
 
 
-    }
+		Assertions.assertEquals(event, listener.result);
+	}
+
+	final class TestListener implements DomainEventListener {
+		DomainEvent result;
+
+		@Override
+		public void propagate(DomainEvent event) {
+			result = event;
+		}
+
+	}
 }
