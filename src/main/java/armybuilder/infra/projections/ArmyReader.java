@@ -14,8 +14,7 @@ public class ArmyReader {
 	public ArmyReader(ArmyRepository armyRepository) {this.armyRepository = armyRepository;}
 
     public List<Army> findByName(Name name) {
-//		return armyRepository.findByName(name);
-		return null;
+		return armyRepository.findByName(name);
 	}
 
 	public Army getById(ArmyId armyId) {

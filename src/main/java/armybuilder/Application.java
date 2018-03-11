@@ -1,6 +1,9 @@
 package armybuilder;
 
 import armybuilder.domain.ArmyRepository;
+import armybuilder.domain.codex.CodexRepository;
+import armybuilder.domain.codex.reader.CodexReader;
+import armybuilder.domain.codex.service.CodexService;
 import armybuilder.domain.events.EventBus;
 import armybuilder.domain.events.EventStore;
 import armybuilder.domain.services.ArmyService;
@@ -10,12 +13,20 @@ public class Application {
 	private final ArmyRepository armyRepository;
 	private final EventStore eventStore;
 	private final ArmyReader reader;
+	private final CodexRepository codexRepository;
+	private CodexService codexService;
+	private CodexReader codexReader;
+	private ArmyService armyService;
 
 	private Application(EventStore eventStore) {
-		this.eventStore = eventStore;
-		armyRepository = new ArmyRepository(this.eventStore);
 		EventBus.instance().subscribe(eventStore);
+		this.eventStore = eventStore;
+		armyRepository = new ArmyRepository(eventStore);
+		armyService = new ArmyService(armyRepository);
 		reader = new ArmyReader(armyRepository);
+		codexRepository = new CodexRepository(eventStore);
+		codexService = new CodexService(codexRepository);
+		codexReader = new CodexReader(codexRepository);
 	}
 
 	public static Application start(EventStore eventStore) {
@@ -23,11 +34,19 @@ public class Application {
 		return new Application(eventStore);
 	}
 
-	public ArmyService getService() {
-		return new ArmyService(armyRepository);
+	public ArmyService getArmyService() {
+		return armyService;
 	}
 
-	public ArmyReader getReader() {
+	public ArmyReader getArmyReader() {
 		return this.reader;
+	}
+
+	public CodexService getCodexService() {
+		return codexService;
+	}
+
+	public CodexReader getCodexReader() {
+		return codexReader;
 	}
 }

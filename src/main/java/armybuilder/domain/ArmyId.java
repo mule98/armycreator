@@ -1,5 +1,6 @@
 package armybuilder.domain;
 
+import armybuilder.domain.events.Id;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 import lombok.EqualsAndHashCode;
 
@@ -7,7 +8,7 @@ import java.util.UUID;
 
 @Immutable
 @EqualsAndHashCode
-public class ArmyId {
+public final class ArmyId extends Id {
     private final UUID id;
 
 

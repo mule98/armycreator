@@ -30,13 +30,13 @@ public class ArmyStory {
 
 
 		Army army
-				= application.getReader().getById(armyId);
+				= application.getArmyReader().getById(armyId);
 		assertEquals(name, army.name());
 
 	}
 
 	private ArmyId createArmy(Name new_army) {
-		return application.getService().createArmy(new CreateArmy(new_army));
+		return application.getArmyService().createArmy(new CreateArmy(new_army));
 	}
 
 	@Test
@@ -47,7 +47,7 @@ public class ArmyStory {
 
 		Name name_modified = new Name("name modified");
 		renameArmy(armyId, name_modified);
-		List<Army> armies = application.getReader()
+		List<Army> armies = application.getArmyReader()
 									   .findByName(name_modified);
 		assertEquals(name_modified,
 				armies.get(0)
@@ -56,7 +56,7 @@ public class ArmyStory {
 	}
 
 	private void renameArmy(ArmyId armyId, Name name_modified) {
-		application.getService()
+		application.getArmyService()
 				   .rename(new RenameArmy(armyId, name_modified));
 	}
 
@@ -73,6 +73,6 @@ public class ArmyStory {
 	}
 
 	private Army getArmy(ArmyId armyId) {
-		return application.getReader().getById(armyId);
+		return application.getArmyReader().getById(armyId);
 	}
 }

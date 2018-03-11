@@ -18,7 +18,7 @@ public class ArmyRepository {
 	}
 
 	public List<Army> findByName(Name name) {
-		return eventStore.getAllIds()
+		return eventStore.getAllIds(new ArmyTypeMatcher())
 						 .map(this::getById)
 						 .filter(t -> t.name() == name)
 						 .collect(Collectors.toList());
@@ -31,7 +31,7 @@ public class ArmyRepository {
 			throw new RuntimeException("No army found for " + id);
 		}
 		for (DomainEvent domainEvent : allEvents) {
-			army = domainEvent.apply(army, false);
+			army = ((DomainEvent<ArmyId,Army>)domainEvent).apply(army, false);
 		}
 		return army;
 	}

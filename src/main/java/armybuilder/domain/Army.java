@@ -25,7 +25,7 @@ public class Army {
 	private Name name = null;
 
 	public Army applyChange(ArmyCreated armyCreated) {
-		return withId(armyCreated.armyId).withName(armyCreated.name);
+		return withId(armyCreated.id).withName(armyCreated.name);
 	}
 
 

@@ -1,18 +1,14 @@
 package armybuilder.domain.events;
 
-import armybuilder.domain.Army;
-import armybuilder.domain.ArmyId;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 import lombok.RequiredArgsConstructor;
 
 @Immutable
 @RequiredArgsConstructor
-public abstract class DomainEvent {
+public abstract class DomainEvent<V extends Id, T> {
 
-	public final ArmyId armyId;
-
-    public final Army apply(Army army, boolean newEvent) {
-        Army result = applyChange(army);
+	public final T apply(T rootAggregate, boolean newEvent) {
+        T result = applyChange(rootAggregate);
         if (newEvent) {
             EventBus.instance()
                     .publish(this);
@@ -20,7 +16,9 @@ public abstract class DomainEvent {
         return result;
     }
 
-    public abstract Army applyChange(Army event);
+    public abstract T applyChange(T event);
+
+	public abstract V getId();
 
 
 }
