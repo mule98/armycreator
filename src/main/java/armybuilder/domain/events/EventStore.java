@@ -1,17 +1,20 @@
 package armybuilder.domain.events;
 
+import armybuilder.domain.common.Id;
+import armybuilder.domain.common.IdTypeMatcher;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class EventStore implements DomainEventListener {
+public class EventStore implements EventListener {
 
 	private final static EventStore instance = new EventStore();
-	private Map<Id, LinkedList<DomainEvent>> eventsById = new HashMap<Id, LinkedList<DomainEvent>>() {
+	private Map<Id, LinkedList<Event>> eventsById = new HashMap<Id, LinkedList<Event>>() {
 		@Override
-		public LinkedList<DomainEvent> get(Object key) {
-			LinkedList<DomainEvent> events = super.get(key);
+		public LinkedList<Event> get(Object key) {
+			LinkedList<Event> events = super.get(key);
 			if (events == null) {
 				events = new LinkedList<>();
 				put((Id) key, events);
@@ -27,7 +30,7 @@ public class EventStore implements DomainEventListener {
 		return instance;
 	}
 
-	public Stream<DomainEvent> getAllEvents() {
+	public Stream<Event> getAllEvents() {
 		return eventsById.values().stream().flatMap(LinkedList::stream);
 	}
 
@@ -35,18 +38,18 @@ public class EventStore implements DomainEventListener {
 		return eventsById.keySet().stream().filter(idTypeMatcher::matchesType).map(idTypeMatcher::transform);
 	}
 
-	public LinkedList<DomainEvent> getAllEvents(Id id) {
-		LinkedList<DomainEvent> events = eventsById.get(id);
+	public LinkedList<Event> getAllEvents(Id id) {
+		LinkedList<Event> events = eventsById.get(id);
 		if (events == null) return new LinkedList<>();
 		else return events;
 	}
 
 	@Override
-	public void propagate(DomainEvent event) {
+	public void propagate(Event event) {
 		insertEvent(event.getId(), event);
 	}
 
-	public void insertEvent(Id id, DomainEvent event) {
+	public void insertEvent(Id id, Event event) {
 		eventsById.get(id).add(event);
 	}
 }

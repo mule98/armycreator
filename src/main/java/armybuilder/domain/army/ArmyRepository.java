@@ -1,6 +1,6 @@
-package armybuilder.domain;
+package armybuilder.domain.army;
 
-import armybuilder.domain.events.DomainEvent;
+import armybuilder.domain.events.Event;
 import armybuilder.domain.events.EventStore;
 
 import java.util.LinkedList;
@@ -26,12 +26,12 @@ public class ArmyRepository {
 
 	public Army getById(ArmyId id) {
 		Army army = new Army();
-		LinkedList<DomainEvent> allEvents = eventStore.getAllEvents(id);
+		LinkedList<Event> allEvents = eventStore.getAllEvents(id);
 		if (allEvents.isEmpty()) {
 			throw new RuntimeException("No army found for " + id);
 		}
-		for (DomainEvent domainEvent : allEvents) {
-			army = ((DomainEvent<ArmyId,Army>)domainEvent).apply(army, false);
+		for (Event event : allEvents) {
+			army = ((Event<ArmyId,Army>) event).apply(army, false);
 		}
 		return army;
 	}

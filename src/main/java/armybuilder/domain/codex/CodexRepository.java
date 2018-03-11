@@ -1,6 +1,6 @@
 package armybuilder.domain.codex;
 
-import armybuilder.domain.events.DomainEvent;
+import armybuilder.domain.events.Event;
 import armybuilder.domain.events.EventStore;
 
 import java.util.LinkedList;
@@ -19,9 +19,9 @@ public class CodexRepository {
 	}
 
 	private Codex getById(CodexId codexId) {
-		final LinkedList<DomainEvent> allEvents = eventStore.getAllEvents(codexId);
+		final LinkedList<Event> allEvents = eventStore.getAllEvents(codexId);
 		Codex codex = new Codex();
-		for (DomainEvent<CodexId, Codex> event :allEvents){
+		for (Event<CodexId, Codex> event :allEvents){
 			codex = event.apply(codex, false);
 		}
 		return codex;

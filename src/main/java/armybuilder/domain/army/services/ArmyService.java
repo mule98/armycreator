@@ -1,12 +1,12 @@
-package armybuilder.domain.services;
+package armybuilder.domain.army.services;
 
-import armybuilder.domain.Army;
-import armybuilder.domain.ArmyId;
-import armybuilder.domain.ArmyRepository;
-import armybuilder.domain.command.CreateArmy;
-import armybuilder.domain.command.RenameArmy;
-import armybuilder.domain.events.ArmyCreated;
-import armybuilder.domain.events.NameChanged;
+import armybuilder.domain.army.Army;
+import armybuilder.domain.army.ArmyId;
+import armybuilder.domain.army.ArmyRepository;
+import armybuilder.domain.army.command.CreateArmy;
+import armybuilder.domain.army.command.RenameArmy;
+import armybuilder.domain.army.events.ArmyCreated;
+import armybuilder.domain.army.events.NameChanged;
 
 public class ArmyService {
 

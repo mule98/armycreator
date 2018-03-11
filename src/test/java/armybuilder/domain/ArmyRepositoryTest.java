@@ -1,9 +1,13 @@
 package armybuilder.domain;
 
-import armybuilder.domain.events.ArmyCreated;
+import armybuilder.domain.army.Army;
+import armybuilder.domain.army.ArmyId;
+import armybuilder.domain.army.ArmyRepository;
+import armybuilder.domain.army.Name;
+import armybuilder.domain.army.events.ArmyCreated;
+import armybuilder.domain.army.events.NameChanged;
 import armybuilder.domain.events.EventBus;
 import armybuilder.domain.events.EventStore;
-import armybuilder.domain.events.NameChanged;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

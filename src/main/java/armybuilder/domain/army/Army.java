@@ -1,7 +1,7 @@
-package armybuilder.domain;
+package armybuilder.domain.army;
 
-import armybuilder.domain.events.ArmyCreated;
-import armybuilder.domain.events.NameChanged;
+import armybuilder.domain.army.events.ArmyCreated;
+import armybuilder.domain.army.events.NameChanged;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 import lombok.*;
 import lombok.experimental.Wither;

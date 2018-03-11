@@ -1,4 +1,4 @@
-package armybuilder.domain.events;
+package armybuilder.domain.common;
 
 import jdk.nashorn.internal.ir.annotations.Immutable;
 

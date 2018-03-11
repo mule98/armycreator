@@ -1,7 +1,7 @@
-package armybuilder.domain.command;
+package armybuilder.domain.army.command;
 
-import armybuilder.domain.ArmyId;
-import armybuilder.domain.Name;
+import armybuilder.domain.army.ArmyId;
+import armybuilder.domain.army.Name;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 
 @Immutable

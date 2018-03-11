@@ -1,4 +1,4 @@
-package armybuilder.domain;
+package armybuilder.domain.army;
 
 import jdk.nashorn.internal.ir.annotations.Immutable;
 import lombok.Data;

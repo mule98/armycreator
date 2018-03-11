@@ -1,6 +1,7 @@
 package armybuilder.domain.events;
 
-import armybuilder.domain.ArmyId;
+import armybuilder.domain.army.ArmyId;
+import armybuilder.domain.army.events.NameChanged;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

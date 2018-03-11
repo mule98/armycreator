@@ -1,6 +1,6 @@
-package armybuilder.domain.command;
+package armybuilder.domain.army.command;
 
-import armybuilder.domain.Name;
+import armybuilder.domain.army.Name;
 
 public class CreateArmy {
 	public final Name name;

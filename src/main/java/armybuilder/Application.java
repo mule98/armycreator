@@ -1,13 +1,13 @@
 package armybuilder;
 
-import armybuilder.domain.ArmyRepository;
+import armybuilder.domain.army.ArmyReader;
+import armybuilder.domain.army.ArmyRepository;
+import armybuilder.domain.army.services.ArmyService;
 import armybuilder.domain.codex.CodexRepository;
 import armybuilder.domain.codex.reader.CodexReader;
 import armybuilder.domain.codex.service.CodexService;
 import armybuilder.domain.events.EventBus;
 import armybuilder.domain.events.EventStore;
-import armybuilder.domain.services.ArmyService;
-import armybuilder.infra.projections.ArmyReader;
 
 public class Application {
 	private final ArmyRepository armyRepository;

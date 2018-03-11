@@ -1,4 +1,4 @@
-package armybuilder.domain.events;
+package armybuilder.domain.common;
 
 public interface IdTypeMatcher<T> {
 	boolean matchesType(Id id);

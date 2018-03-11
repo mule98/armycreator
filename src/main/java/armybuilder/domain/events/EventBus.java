@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 public class EventBus {
 	private static EventBus eventBus = new EventBus();
-	private LinkedList<DomainEventListener> subscribers = new LinkedList<>();
+	private LinkedList<EventListener> subscribers = new LinkedList<>();
 
 
 	private EventBus() {
@@ -15,11 +15,11 @@ public class EventBus {
 		return eventBus;
 	}
 
-	public void subscribe(DomainEventListener domainEventListener) {
-		subscribers.add(domainEventListener);
+	public void subscribe(EventListener eventListener) {
+		subscribers.add(eventListener);
 	}
 
-	public void publish(DomainEvent event) {
+	public void publish(Event event) {
 		subscribers.forEach(t -> t.propagate(event));
 	}
 }

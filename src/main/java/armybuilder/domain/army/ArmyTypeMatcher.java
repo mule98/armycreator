@@ -1,7 +1,7 @@
-package armybuilder.domain;
+package armybuilder.domain.army;
 
-import armybuilder.domain.events.Id;
-import armybuilder.domain.events.IdTypeMatcher;
+import armybuilder.domain.common.Id;
+import armybuilder.domain.common.IdTypeMatcher;
 
 public class ArmyTypeMatcher implements IdTypeMatcher<ArmyId> {
 	@Override

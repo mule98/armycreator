@@ -1,7 +1,7 @@
 package armybuilder.domain.codex;
 
-import armybuilder.domain.events.Id;
-import armybuilder.domain.events.IdTypeMatcher;
+import armybuilder.domain.common.Id;
+import armybuilder.domain.common.IdTypeMatcher;
 
 class CodexIdIdTypeMatcher implements IdTypeMatcher<CodexId> {
 	@Override

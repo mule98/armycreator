@@ -1,6 +1,9 @@
 package armybuilder.domain;
 
-import armybuilder.domain.events.ArmyCreated;
+import armybuilder.domain.army.Army;
+import armybuilder.domain.army.ArmyId;
+import armybuilder.domain.army.Unit;
+import armybuilder.domain.army.events.ArmyCreated;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

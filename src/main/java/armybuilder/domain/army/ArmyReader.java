@@ -1,9 +1,4 @@
-package armybuilder.infra.projections;
-
-import armybuilder.domain.Army;
-import armybuilder.domain.ArmyId;
-import armybuilder.domain.ArmyRepository;
-import armybuilder.domain.Name;
+package armybuilder.domain.army;
 
 import java.util.List;
 

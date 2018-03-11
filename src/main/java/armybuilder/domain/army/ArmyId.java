@@ -1,6 +1,6 @@
-package armybuilder.domain;
+package armybuilder.domain.army;
 
-import armybuilder.domain.events.Id;
+import armybuilder.domain.common.Id;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 import lombok.EqualsAndHashCode;
 

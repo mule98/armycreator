@@ -12,18 +12,18 @@ class EventBusTest {
 
 		TestListener listener = new TestListener();
 		eventBus.subscribe(listener);
-		DomainEvent event = Mockito.mock(DomainEvent.class);
+		Event event = Mockito.mock(Event.class);
 		EventBus.instance().publish(event);
 
 
 		Assertions.assertEquals(event, listener.result);
 	}
 
-	final class TestListener implements DomainEventListener {
-		DomainEvent result;
+	final class TestListener implements EventListener {
+		Event result;
 
 		@Override
-		public void propagate(DomainEvent event) {
+		public void propagate(Event event) {
 			result = event;
 		}
 

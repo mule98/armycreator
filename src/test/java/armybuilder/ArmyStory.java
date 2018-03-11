@@ -1,10 +1,10 @@
 package armybuilder;
 
-import armybuilder.domain.Army;
-import armybuilder.domain.ArmyId;
-import armybuilder.domain.Name;
-import armybuilder.domain.command.CreateArmy;
-import armybuilder.domain.command.RenameArmy;
+import armybuilder.domain.army.Army;
+import armybuilder.domain.army.ArmyId;
+import armybuilder.domain.army.Name;
+import armybuilder.domain.army.command.CreateArmy;
+import armybuilder.domain.army.command.RenameArmy;
 import armybuilder.domain.events.EventStore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
