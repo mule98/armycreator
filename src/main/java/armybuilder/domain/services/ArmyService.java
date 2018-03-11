@@ -1,8 +1,10 @@
-package armybuilder.domain.command;
+package armybuilder.domain.services;
 
 import armybuilder.domain.Army;
 import armybuilder.domain.ArmyId;
 import armybuilder.domain.ArmyRepository;
+import armybuilder.domain.command.CreateArmy;
+import armybuilder.domain.command.RenameArmy;
 import armybuilder.domain.events.ArmyCreated;
 import armybuilder.domain.events.NameChanged;
 

@@ -1,18 +1,21 @@
 package armybuilder;
 
 import armybuilder.domain.ArmyRepository;
-import armybuilder.domain.command.ArmyService;
 import armybuilder.domain.events.EventBus;
 import armybuilder.domain.events.EventStore;
+import armybuilder.domain.services.ArmyService;
+import armybuilder.infra.projections.ArmyReader;
 
 public class Application {
-	private ArmyRepository armyRepository;
-	private EventStore eventStore;
+	private final ArmyRepository armyRepository;
+	private final EventStore eventStore;
+	private final ArmyReader reader;
 
 	private Application(EventStore eventStore) {
 		this.eventStore = eventStore;
 		armyRepository = new ArmyRepository(this.eventStore);
 		EventBus.instance().subscribe(eventStore);
+		reader = new ArmyReader(armyRepository);
 	}
 
 	public static Application start(EventStore eventStore) {
@@ -24,7 +27,7 @@ public class Application {
 		return new ArmyService(armyRepository);
 	}
 
-	public ArmyRepository getReader() {
-		return this.armyRepository;
+	public ArmyReader getReader() {
+		return this.reader;
 	}
 }

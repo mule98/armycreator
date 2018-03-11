@@ -1,7 +1,6 @@
 package armybuilder.domain;
 
 import armybuilder.domain.events.ArmyCreated;
-import armybuilder.domain.events.DomainEvent;
 import armybuilder.domain.events.NameChanged;
 import lombok.*;
 import lombok.experimental.Wither;
@@ -17,39 +16,35 @@ import java.util.stream.Stream;
 @NoArgsConstructor
 public class Army {
 
-    @NonNull
-    private ArmyId id;
-    @NonNull
-    private Set<Unit> units = Collections.emptySet();
-    private Name name = null;
+	@NonNull
+	private ArmyId id;
+	@NonNull
+	private Set<Unit> units = Collections.emptySet();
+	private Name name = null;
 
-    public Army applyChange(ArmyCreated armyCreated) {
-        return withId(armyCreated.armyId).withName(armyCreated.name);
-    }
-
-
-    public Army applyChange(NameChanged nameChanged) {
-        return withName(nameChanged.name);
-    }
+	public Army applyChange(ArmyCreated armyCreated) {
+		return withId(armyCreated.armyId).withName(armyCreated.name);
+	}
 
 
-    public Army add(Unit unit) {
+	public Army applyChange(NameChanged nameChanged) {
+		return withName(nameChanged.name);
+	}
+
+
+	public Army add(Unit unit) {
 		HashSet<Unit> tmpUnits = new HashSet<>(units);
-        tmpUnits.add(unit);
-        return withUnits(Collections.unmodifiableSet(tmpUnits));
-    }
+		tmpUnits.add(unit);
+		return withUnits(Collections.unmodifiableSet(tmpUnits));
+	}
 
 
-    public Stream<Unit> units() {
-        return units.stream();
-    }
-
-    public Name name() {
-        return name;
-    }
+	public Stream<Unit> units() {
+		return units.stream();
+	}
 
 
-    public void applyChange(DomainEvent event, boolean b) {
-
-    }
+	public Name name() {
+		return name;
+	}
 }
