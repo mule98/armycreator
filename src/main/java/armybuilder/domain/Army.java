@@ -2,6 +2,7 @@ package armybuilder.domain;
 
 import armybuilder.domain.events.ArmyCreated;
 import armybuilder.domain.events.NameChanged;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 import lombok.*;
 import lombok.experimental.Wither;
 
@@ -14,6 +15,7 @@ import java.util.stream.Stream;
 @Wither(value = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
+@Immutable
 public class Army {
 
 	@NonNull
