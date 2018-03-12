@@ -34,7 +34,7 @@ public class EventStore implements EventListener {
 		return eventsById.values().stream().flatMap(LinkedList::stream);
 	}
 
-	public <T> Stream<T> getAllIds(IdTypeMatcher<T> idTypeMatcher) {
+	public <T extends Id> Stream<T> getAllIds(IdTypeMatcher<T> idTypeMatcher) {
 		return eventsById.keySet().stream().filter(idTypeMatcher::matchesType).map(idTypeMatcher::transform);
 	}
 

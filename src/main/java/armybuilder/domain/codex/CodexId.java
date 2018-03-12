@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import java.util.UUID;
 
 @Immutable
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CodexId extends Id{
 	private final UUID id;

@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import java.util.UUID;
 
 @Immutable
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 public final class ArmyId extends Id {
     private final UUID id;
 
