@@ -2,6 +2,7 @@ package armybuilder.domain;
 
 import armybuilder.domain.army.Army;
 import armybuilder.domain.army.ArmyId;
+import armybuilder.domain.army.Name;
 import armybuilder.domain.army.Unit;
 import armybuilder.domain.army.events.ArmyCreated;
 import org.junit.jupiter.api.Test;
@@ -15,14 +16,14 @@ class ArmyTest {
 	public void addUnit() {
 		Army army = new Army().applyChange(new ArmyCreated(ArmyId.next(), null));
 
-		Unit unit = new Unit();
+        Unit unit = new Unit().withName(new Name("unit1"));
 		army = army.add(unit);
 
 		assertTrue(army.units().allMatch(t -> t.equals(unit)));
 		assertEquals(1, army.units().count());
 
 
-		Unit unit2 = new Unit();
+        Unit unit2 = new Unit().withName(new Name("unit2"));
 		army = army.add(unit2);
 
 		assertTrue(army.units().anyMatch(t -> t.equals(unit)));

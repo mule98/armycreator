@@ -18,7 +18,7 @@ public class CodexRepository {
 		return eventStore.getAllIds(new CodexIdIdTypeMatcher()).map(this::getById).filter(c -> c.getName().equals(codexName)).findFirst();
 	}
 
-	private Codex getById(CodexId codexId) {
+    public Codex getById(CodexId codexId) {
 		final LinkedList<Event> allEvents = eventStore.getAllEvents(codexId);
 		Codex codex = new Codex();
 		for (Event<CodexId, Codex> event :allEvents){

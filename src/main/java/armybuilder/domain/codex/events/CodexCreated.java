@@ -5,20 +5,18 @@ import armybuilder.domain.codex.CodexId;
 import armybuilder.domain.codex.CodexName;
 import armybuilder.domain.events.Event;
 import jdk.nashorn.internal.ir.annotations.Immutable;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Immutable
 @Data
 @EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
 public class CodexCreated extends Event<CodexId, Codex> {
 	private final CodexId id;
 	private final CodexName name;
 
-	public CodexCreated(CodexId id, CodexName name) {
-		this.id = id;
-		this.name = name;
-	}
 
 	@Override
 	public Codex applyChange(Codex event) {

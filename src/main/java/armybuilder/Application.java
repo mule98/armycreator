@@ -8,6 +8,7 @@ import armybuilder.domain.codex.reader.CodexReader;
 import armybuilder.domain.codex.service.CodexService;
 import armybuilder.domain.events.EventBus;
 import armybuilder.domain.events.EventStore;
+import armybuilder.domain.game.service.GameService;
 
 public class Application {
 	private final ArmyRepository armyRepository;
@@ -17,8 +18,9 @@ public class Application {
 	private CodexService codexService;
 	private CodexReader codexReader;
 	private ArmyService armyService;
+    private GameService gameService = new GameService();
 
-	private Application(EventStore eventStore) {
+    public Application(EventStore eventStore) {
 		EventBus.instance().subscribe(eventStore);
 		this.eventStore = eventStore;
 		armyRepository = new ArmyRepository(eventStore);
@@ -49,4 +51,8 @@ public class Application {
 	public CodexReader getCodexReader() {
 		return codexReader;
 	}
+
+    public GameService getGameService() {
+        return gameService;
+    }
 }

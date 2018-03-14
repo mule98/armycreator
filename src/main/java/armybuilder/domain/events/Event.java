@@ -17,7 +17,7 @@ public abstract class Event<V extends Id, T> {
         return result;
     }
 
-    public abstract T applyChange(T event);
+    public abstract T applyChange(T element);
 
 	public abstract V getId();
 
