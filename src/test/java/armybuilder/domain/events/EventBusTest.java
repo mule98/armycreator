@@ -23,7 +23,7 @@ class EventBusTest {
 		Event result;
 
 		@Override
-		public void propagate(Event event) {
+        public void propagate(Event event) {
 			result = event;
 		}
 

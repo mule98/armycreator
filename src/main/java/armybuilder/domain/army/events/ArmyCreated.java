@@ -10,10 +10,10 @@ import lombok.Data;
 @Immutable
 @Data
 public final class ArmyCreated extends Event<ArmyId, Army> {
-	public final ArmyId id;
-	public final Name name;
+    final ArmyId id;
+    final Name name;
 
-	public final Army applyChange(Army army) {
+    protected final Army applyChange(Army army) {
 		return army.applyChange(this);
 	}
 

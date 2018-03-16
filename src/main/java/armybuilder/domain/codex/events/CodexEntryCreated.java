@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 public class CodexEntryCreated extends Event<CodexId, Codex> {
 
     private final CodexId id;
@@ -19,7 +19,7 @@ public class CodexEntryCreated extends Event<CodexId, Codex> {
 
 
     @Override
-    public Codex applyChange(Codex codex) {
+    protected Codex applyChange(Codex codex) {
         Entry entry = new Entry().withId(entryId)
                                  .withName(name);
         return codex.addEntry(entry);

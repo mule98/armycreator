@@ -11,15 +11,15 @@ public class EventBus {
 	private EventBus() {
 	}
 
-	public static EventBus instance() {
+    public static EventBus instance() {
 		return eventBus;
 	}
 
-	public void subscribe(EventListener eventListener) {
+    public void subscribe(EventListener eventListener) {
 		subscribers.add(eventListener);
 	}
 
-	public void publish(Event event) {
+    void publish(Event event) {
 		subscribers.forEach(t -> t.propagate(event));
 	}
 }

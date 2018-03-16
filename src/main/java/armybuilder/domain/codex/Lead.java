@@ -1,4 +1,4 @@
 package armybuilder.domain.codex;
 
-public class Lead {
+class Lead {
 }

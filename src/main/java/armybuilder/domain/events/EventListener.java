@@ -1,6 +1,6 @@
 package armybuilder.domain.events;
 
 @FunctionalInterface
-public interface EventListener {
+interface EventListener {
 	void propagate(Event event);
 }

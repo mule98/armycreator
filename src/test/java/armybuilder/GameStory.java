@@ -2,29 +2,33 @@ package armybuilder;
 
 import armybuilder.domain.Player;
 import armybuilder.domain.army.ArmyId;
-import armybuilder.domain.events.EventStore;
 import armybuilder.domain.game.Game;
 import armybuilder.domain.game.Phase;
 import armybuilder.domain.game.PlayerId;
 import armybuilder.domain.game.command.CreateGame;
 import armybuilder.domain.game.service.GameService;
+import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class GameStory {
+class GameStory {
 
-    private EventStore eventStore = new EventStore();
-    Application application = new Application(eventStore);
     private ArmyId player1ArmyId = ArmyId.next();
     private ArmyId player2ArmyId = ArmyId.next();
+    private GameService gameService;
 
-    public void testTwoPLayerGamePhasis() {
+    @BeforeEach
+    public void beforeEach() {
+        gameService = new GameService();
+    }
+
+    void testTwoPLayerGamePhasis() {
 
         Game gamePlayer1 = service().prepareGame(new CreateGame(player1ArmyId, PlayerId.next()));
-        Game gamePlayer2 = service().joinGame(player1ArmyId, PlayerId.next(), gamePlayer1.id);
-        assertNotNull(gamePlayer1.id);
-        assertEquals(gamePlayer1.id, gamePlayer2.id);
+        Game gamePlayer2 = service().joinGame(player1ArmyId, PlayerId.next(), gamePlayer1.getId());
+        assertNotNull(gamePlayer1.getId());
+        assertEquals(gamePlayer1.getId(), gamePlayer2.getId());
         Phase phase1 = gamePlayer1.getPhase();
         Phase phase2 = gamePlayer1.getPhase();
         assertEquals(Phase.CHECK, phase1);
@@ -45,7 +49,7 @@ public class GameStory {
     }
 
     private GameService service() {
-        return application.getGameService();
+        return gameService;
     }
 
 

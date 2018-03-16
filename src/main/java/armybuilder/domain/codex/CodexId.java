@@ -14,7 +14,7 @@ import java.util.UUID;
 public class CodexId extends Id{
 	private final UUID id;
 
-	public static CodexId next(){
+    public static CodexId next() {
 		return new CodexId(UUID.randomUUID());
 	}
 }

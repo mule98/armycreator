@@ -28,11 +28,11 @@ public class Codex {
     //
     private Set<Entry> entries = new HashSet<>();
 
-	public Codex apply(CodexCreated codexCreated) {
+    public Codex apply(CodexCreated codexCreated) {
 		return withId(codexCreated.getId()).withName(codexCreated.getName());
 	}
 
-    public Stream<Entry> entries() {
+    Stream<Entry> entries() {
         return entries.stream();
     }
 

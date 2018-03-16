@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ArmyTest {
 
 	@Test
-	public void addUnit() {
+    void addUnit() {
 		Army army = new Army().applyChange(new ArmyCreated(ArmyId.next(), null));
 
         Unit unit = new Unit().withName(new Name("unit1"));
@@ -39,7 +39,7 @@ class ArmyTest {
 	}
 
 	@Test
-	public void addUnitTwice() {
+    void addUnitTwice() {
 		Army army = new Army().applyChange(new ArmyCreated(ArmyId.next(), null));
 
 		Unit unit = new Unit();

@@ -19,7 +19,7 @@ public class CodexCreated extends Event<CodexId, Codex> {
 
 
 	@Override
-	public Codex applyChange(Codex event) {
+    protected Codex applyChange(Codex event) {
 		return new Codex().apply(this);
 	}
 

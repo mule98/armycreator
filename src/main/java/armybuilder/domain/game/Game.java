@@ -1,18 +1,17 @@
 package armybuilder.domain.game;
 
 import armybuilder.domain.Player;
+import lombok.Data;
 
+@Data
 public class Game {
-    public GameId id;
+    GameId id;
     private Phase phase;
 
-    public void placeBattleField() {
+    void placeBattleField() {
 
     }
 
-    public Phase getPhase() {
-        return phase;
-    }
 
     public Player randomBeginner() {
         return null;

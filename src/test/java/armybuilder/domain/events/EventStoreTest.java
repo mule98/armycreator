@@ -12,7 +12,7 @@ class EventStoreTest {
 
 
     @Test
-    public void testStoreEvent() {
+    void testStoreEvent() {
         NameChanged domainEvent = Mockito.mock(NameChanged.class);
         EventStore.instance()
                   .insertEvent(ArmyId.next(), domainEvent);

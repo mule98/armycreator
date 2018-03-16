@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public abstract class Event<V extends Id, T> {
 
-	public final T apply(T rootAggregate, boolean newEvent) {
+    public final T apply(T rootAggregate, boolean newEvent) {
         T result = applyChange(rootAggregate);
         if (newEvent) {
             EventBus.instance()
@@ -17,9 +17,9 @@ public abstract class Event<V extends Id, T> {
         return result;
     }
 
-    public abstract T applyChange(T element);
+    protected abstract T applyChange(T element);
 
-	public abstract V getId();
+    protected abstract V getId();
 
 
 }

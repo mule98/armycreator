@@ -1,12 +1,10 @@
 package armybuilder.domain.army.command;
 
 import armybuilder.domain.army.Name;
+import lombok.Data;
 
+@Data
 public class CreateArmy {
-	public final Name name;
+    private final Name name;
 
-    public CreateArmy(Name name) {
-
-		this.name = name;
-	}
 }

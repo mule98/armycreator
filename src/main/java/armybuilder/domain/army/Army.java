@@ -24,29 +24,29 @@ public class Army {
 	private Set<Unit> units = Collections.emptySet();
 	private Name name = null;
 
-	public Army applyChange(ArmyCreated armyCreated) {
-		return withId(armyCreated.id).withName(armyCreated.name);
+    public Army applyChange(ArmyCreated armyCreated) {
+        return withId(armyCreated.getId()).withName(armyCreated.getName());
 	}
 
 
-	public Army applyChange(NameChanged nameChanged) {
-		return withName(nameChanged.name);
+    public Army applyChange(NameChanged nameChanged) {
+        return withName(nameChanged.getName());
 	}
 
 
-	public Army add(Unit unit) {
+    public Army add(Unit unit) {
 		HashSet<Unit> tmpUnits = new HashSet<>(units);
 		tmpUnits.add(unit);
 		return withUnits(Collections.unmodifiableSet(tmpUnits));
 	}
 
 
-	public Stream<Unit> units() {
+    public Stream<Unit> units() {
 		return units.stream();
 	}
 
 
-	public Name name() {
+    public Name name() {
 		return name;
 	}
 }

@@ -12,11 +12,11 @@ public class CreateGame {
         this.playerId = playerId;
     }
 
-    public ArmyId getArmyId() {
+    ArmyId getArmyId() {
         return armyId;
     }
 
-    public PlayerId getPlayerId() {
+    PlayerId getPlayerId() {
         return playerId;
     }
 }

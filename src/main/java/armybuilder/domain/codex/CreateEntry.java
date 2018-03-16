@@ -9,7 +9,7 @@ import lombok.NonNull;
 @Immutable
 public class CreateEntry {
     @NonNull
-    public final CodexId codexId;
+    final CodexId codexId;
     @NonNull
-    public final Name name;
+    final Name name;
 }

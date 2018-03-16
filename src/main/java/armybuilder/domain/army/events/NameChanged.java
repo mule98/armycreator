@@ -11,10 +11,10 @@ import lombok.Data;
 @Data
 public class NameChanged extends Event<ArmyId, Army> {
 
-	public final ArmyId id;
-    public final Name name;
+    final ArmyId id;
+    final Name name;
 
-    public Army applyChange(Army event) {
+    protected Army applyChange(Army event) {
         return event.applyChange(this);
     }
 }

@@ -1,9 +1,9 @@
 package armybuilder.domain.shared;
 
-public class Movement {
+class Movement {
     private final int inches;
 
-    public Movement(int inches) {
+    Movement(int inches) {
         this.inches = inches;
     }
 }

@@ -6,6 +6,6 @@ import lombok.Data;
 @Immutable
 @Data
 public class CreateCodex {
-    public final CodexName name;
+    final CodexName name;
 
 }

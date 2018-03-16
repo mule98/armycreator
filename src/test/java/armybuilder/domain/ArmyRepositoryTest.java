@@ -22,7 +22,7 @@ class ArmyRepositoryTest {
 	private final static ArmyRepository repository = new ArmyRepository(eventStore);
 
 	@BeforeAll
-	public static void beforeAll(){
+    static void beforeAll() {
 		EventBus.instance().subscribe(eventStore);
 	}
 	@Test
