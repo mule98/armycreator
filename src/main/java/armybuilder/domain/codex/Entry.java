@@ -18,4 +18,5 @@ public class Entry {
     private Name name;
     private Movement movement;
     private CombatSkill combatSkill;
+
 }

@@ -1,6 +1,7 @@
 package armybuilder.domain.codex;
 
 import armybuilder.domain.codex.events.CodexCreated;
+import armybuilder.domain.codex.events.CodexEntryModified;
 import armybuilder.domain.codex.events.CombatSkillModified;
 import armybuilder.domain.codex.events.MovementModified;
 import jdk.nashorn.internal.ir.annotations.Immutable;
@@ -13,6 +14,7 @@ import lombok.experimental.Wither;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -46,30 +48,26 @@ public class Codex {
     }
 
     public Codex apply(MovementModified movementModified) {
-        Entry entry = getEntry(movementModified.getEntryId());
-        Set<Entry> entries = new HashSet<>(this.entries);
-        entries.remove(entry);
-        entry = entry.withMovement(movementModified.getMovement());
-        entries.add(entry);
-        return withEntries(Collections.unmodifiableSet(entries));
+        return entryModification(movementModified, t -> t.withMovement(movementModified.getMovement()));
     }
 
-    private Entry getEntry(EntryId entryId) {
+    private Entry getEntry(CodexEntryModified codexEntryModified) {
         return entries.stream()
                       .filter(t -> t.getId()
-                                    .equals(entryId))
+                                    .equals(codexEntryModified.getEntryId()))
                       .findFirst()
                       .orElseThrow(RuntimeException::new);
     }
 
     public Codex apply(CombatSkillModified combatSkillModified) {
-
-        Entry entry = getEntry(combatSkillModified.getEntryId());
-        Set<Entry> entries = new HashSet<>(this.entries);
-        entries.remove(entry);
-        entry = entry.withCombatSkill(combatSkillModified.getCombatSkill());
-        entries.add(entry);
-        return withEntries(Collections.unmodifiableSet(entries));
+        return entryModification(combatSkillModified, t -> t.withCombatSkill(combatSkillModified.getCombatSkill()));
     }
 
+    private Codex entryModification(CodexEntryModified codexEntryModified, Function<Entry, Entry> modification) {
+        Entry entry = getEntry(codexEntryModified);
+        Set<Entry> entries = new HashSet<>(this.entries);
+        entries.remove(entry);
+        entries.add(modification.apply(entry));
+        return withEntries(Collections.unmodifiableSet(entries));
+    }
 }
