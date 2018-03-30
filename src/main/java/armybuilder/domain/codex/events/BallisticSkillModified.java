@@ -3,16 +3,16 @@ package armybuilder.domain.codex.events;
 import armybuilder.domain.codex.Codex;
 import armybuilder.domain.codex.CodexId;
 import armybuilder.domain.codex.EntryId;
-import armybuilder.domain.codex.attributes.WeaponSkill;
+import armybuilder.domain.codex.attributes.BallisticSkill;
 import lombok.Data;
 
 @Data
-public class CombatSkillModified extends CodexEntryModified {
-    private final WeaponSkill weaponSkill;
+public class BallisticSkillModified extends CodexEntryModified {
+    private final BallisticSkill ballisticSkill;
 
-    public CombatSkillModified(CodexId codexId, EntryId entryId, WeaponSkill weaponSkill) {
+    public BallisticSkillModified(CodexId codexId, EntryId entryId, BallisticSkill ballisticSkill) {
         super(codexId, entryId);
-        this.weaponSkill = weaponSkill;
+        this.ballisticSkill = ballisticSkill;
     }
 
     @Override

@@ -1,8 +1,10 @@
 package armybuilder.domain.codex;
 
 import armybuilder.domain.army.Name;
-import armybuilder.domain.codex.attributes.CombatSkill;
+import armybuilder.domain.codex.attributes.BallisticSkill;
 import armybuilder.domain.codex.attributes.Movement;
+import armybuilder.domain.codex.attributes.WeaponSkill;
+import armybuilder.domain.codex.commands.BallisticSkillModification;
 import armybuilder.domain.codex.commands.CombatSkillModification;
 import armybuilder.domain.codex.commands.MovementModification;
 import armybuilder.domain.codex.reader.CodexReader;
@@ -56,7 +58,7 @@ class CodexStory {
         EntryId entryId = createEntry(codexId, "Kroot carnivores");
         setMovement(codexId, entryId, 8);
         setCombatSkill(codexId, entryId, "3+");
-//        setSalisticSkill(entryid,"4+");
+        setBalisticSkill(codexId, entryId, "4+");
 //        setStrength(entryid,3);
 //        setHealthPoint(entryid,1);
 //        setAttacks(entryid,1);
@@ -73,6 +75,26 @@ class CodexStory {
 
 
     @Test
+    void setBalisticSkill() {
+        CodexId codexId = createCodex(TAU_CODEX);
+        EntryId entryId = createEntry(codexId, KROOT_ENTRY);
+        String bs = "3+";
+        setBalisticSkill(codexId, entryId, bs);
+
+        BallisticSkill result = getCodex(TAU_CODEX).get()
+                                                   .entries()
+                                                   .findFirst()
+                                                   .get()
+                                                   .getBallisticSkill();
+        assertEquals(new BallisticSkill(bs), result);
+    }
+
+    private void setBalisticSkill(CodexId codexId, EntryId entryId, String s) {
+        codexService.modifyBallisticSkill(new BallisticSkillModification(codexId, entryId, new BallisticSkill(s)));
+    }
+
+
+    @Test
     void modifyEntryCombatSkill() {
         CodexId codexId = createCodex(TAU_CODEX);
 
@@ -80,17 +102,17 @@ class CodexStory {
         String cs = "3+";
         setCombatSkill(codexId, entryId, cs);
         Optional<Codex> codex = getCodex(TAU_CODEX);
-        CombatSkill result = codex.get()
+        WeaponSkill result = codex.get()
                                   .entries()
                                   .findFirst()
                                   .get()
-                                  .getCombatSkill();
-        assertEquals(new CombatSkill(cs), result);
+                                  .getWeaponSkill();
+        assertEquals(new WeaponSkill(cs), result);
 
     }
 
     private void setCombatSkill(CodexId codexId, EntryId entryId, String cs) {
-        codexService.modifyCombatSkill(new CombatSkillModification(new CombatSkill(cs), codexId, entryId));
+        codexService.modifyCombatSkill(new CombatSkillModification(new WeaponSkill(cs), codexId, entryId));
     }
 
 

@@ -1,12 +1,11 @@
 package armybuilder.domain.codex.service;
 
 import armybuilder.domain.codex.*;
+import armybuilder.domain.codex.commands.BallisticSkillModification;
+import armybuilder.domain.codex.commands.CodexCommand;
 import armybuilder.domain.codex.commands.CombatSkillModification;
 import armybuilder.domain.codex.commands.MovementModification;
-import armybuilder.domain.codex.events.CodexCreated;
-import armybuilder.domain.codex.events.CodexEntryCreated;
-import armybuilder.domain.codex.events.CombatSkillModified;
-import armybuilder.domain.codex.events.MovementModified;
+import armybuilder.domain.codex.events.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,21 +36,29 @@ public class CodexService {
         return next;
     }
 
+    private Codex getCodex(CodexCommand codexCommand) {
+        return codexRepository.getById(codexCommand.getCodexId());
+    }
+
     private Codex getCodex(CodexId codexId) {
         return codexRepository.getById(codexId);
     }
 
-    public void modifyMovement(MovementModification movementModification) {
-        Codex codex = getCodex(movementModification.getCodexId());
-        new MovementModified(movementModification.getCodexId(),
-                             movementModification.getEntryId(),
-                             movementModification.getMovement()).apply(codex, true);
+    public void modifyMovement(MovementModification mCommand) {
+        Codex codex = getCodex(mCommand);
+        new MovementModified(mCommand.getCodexId(), mCommand.getEntryId(), mCommand.getMovement()).apply(codex, true);
     }
 
-    public void modifyCombatSkill(CombatSkillModification combatSkillModification) {
-        Codex codex = getCodex(combatSkillModification.getCodexId());
-        new CombatSkillModified(combatSkillModification.getCodexId(),
-                                combatSkillModification.getEntryId(),
-                                combatSkillModification.getCombatSkill()).apply(codex, true);
+    public void modifyCombatSkill(CombatSkillModification csCommand) {
+        Codex codex = getCodex(csCommand);
+        new CombatSkillModified(csCommand.getCodexId(), csCommand.getEntryId(), csCommand.getWeaponSkill()).apply(codex,
+                                                                                                                  true);
+    }
+
+    public void modifyBallisticSkill(BallisticSkillModification bsCommand) {
+        Codex codex = getCodex(bsCommand);
+        new BallisticSkillModified(bsCommand.getCodexId(), bsCommand.getEntryId(), bsCommand.getBallisticSkill()).apply(
+                codex,
+                true);
     }
 }

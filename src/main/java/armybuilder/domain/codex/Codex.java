@@ -1,9 +1,6 @@
 package armybuilder.domain.codex;
 
-import armybuilder.domain.codex.events.CodexCreated;
-import armybuilder.domain.codex.events.CodexEntryModified;
-import armybuilder.domain.codex.events.CombatSkillModified;
-import armybuilder.domain.codex.events.MovementModified;
+import armybuilder.domain.codex.events.*;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -60,7 +57,7 @@ public class Codex {
     }
 
     public Codex apply(CombatSkillModified combatSkillModified) {
-        return entryModification(combatSkillModified, t -> t.withCombatSkill(combatSkillModified.getCombatSkill()));
+        return entryModification(combatSkillModified, t -> t.withWeaponSkill(combatSkillModified.getWeaponSkill()));
     }
 
     private Codex entryModification(CodexEntryModified codexEntryModified, Function<Entry, Entry> modification) {
@@ -69,5 +66,10 @@ public class Codex {
         entries.remove(entry);
         entries.add(modification.apply(entry));
         return withEntries(Collections.unmodifiableSet(entries));
+    }
+
+    public Codex apply(BallisticSkillModified ballisticSkillModified) {
+        return entryModification(ballisticSkillModified,
+                                 t -> t.withBallisticSkill(ballisticSkillModified.getBallisticSkill()));
     }
 }
