@@ -1,6 +1,8 @@
 package armybuilder.domain.codex;
 
 import armybuilder.domain.codex.events.CodexCreated;
+import armybuilder.domain.codex.events.CombatSkillModified;
+import armybuilder.domain.codex.events.MovementModified;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -20,17 +22,16 @@ import java.util.stream.Stream;
 @NoArgsConstructor
 @Immutable
 public class Codex {
-	private CodexName name;
-	private CodexId id;
+    private CodexName name;
+    private CodexId id;
 
 
     //todo: Only ID and Name are discriminant in the set for replacement.
-    //
-    private Set<Entry> entries = new HashSet<>();
+    private Set<Entry> entries = Collections.unmodifiableSet(Collections.EMPTY_SET);
 
     public Codex apply(CodexCreated codexCreated) {
-		return withId(codexCreated.getId()).withName(codexCreated.getName());
-	}
+        return withId(codexCreated.getId()).withName(codexCreated.getName());
+    }
 
     Stream<Entry> entries() {
         return entries.stream();
@@ -43,4 +44,32 @@ public class Codex {
                                    .collect(Collectors.toSet());
         return this.withEntries(Collections.unmodifiableSet(collect));
     }
+
+    public Codex apply(MovementModified movementModified) {
+        Entry entry = getEntry(movementModified.getEntryId());
+        Set<Entry> entries = new HashSet<>(this.entries);
+        entries.remove(entry);
+        entry = entry.withMovement(movementModified.getMovement());
+        entries.add(entry);
+        return withEntries(Collections.unmodifiableSet(entries));
+    }
+
+    private Entry getEntry(EntryId entryId) {
+        return entries.stream()
+                      .filter(t -> t.getId()
+                                    .equals(entryId))
+                      .findFirst()
+                      .orElseThrow(RuntimeException::new);
+    }
+
+    public Codex apply(CombatSkillModified combatSkillModified) {
+
+        Entry entry = getEntry(combatSkillModified.getEntryId());
+        Set<Entry> entries = new HashSet<>(this.entries);
+        entries.remove(entry);
+        entry = entry.withCombatSkill(combatSkillModified.getCombatSkill());
+        entries.add(entry);
+        return withEntries(Collections.unmodifiableSet(entries));
+    }
+
 }
