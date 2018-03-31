@@ -86,4 +86,12 @@ public class Codex {
         return entryModification(attackModified, entry -> entry.withAttack(attackModified.getAttack()));
 
     }
+
+    public Codex apply(LeadModified leadModified) {
+        return entryModification(leadModified, entry -> entry.withLead(leadModified.getLead()));
+    }
+
+    public Codex apply(SaveModified saveModified) {
+        return entryModification(saveModified, entry -> entry.withSave(saveModified.getSave()));
+    }
 }

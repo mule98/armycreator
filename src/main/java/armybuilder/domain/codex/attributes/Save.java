@@ -1,4 +1,8 @@
 package armybuilder.domain.codex.attributes;
 
-class Save {
+import lombok.Data;
+
+@Data
+public class Save {
+    private final String save;
 }

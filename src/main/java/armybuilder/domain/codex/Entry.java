@@ -21,4 +21,6 @@ public class Entry {
     private Strength strength;
     private Wound wound;
     private Attack attack;
+    private Lead lead;
+    private Save save;
 }

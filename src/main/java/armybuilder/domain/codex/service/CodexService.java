@@ -79,4 +79,19 @@ public class CodexService {
                            attackModification.getEntryId(),
                            attackModification.getAttack()).apply(codex, true);
     }
+
+    public void modifyLead(LeadModification leadModification) {
+        Codex codex = getCodex(leadModification);
+        new LeadModified(leadModification.getCodexId(),
+                         leadModification.getEntryId(),
+                         leadModification.getLead()).apply(codex, true);
+    }
+
+    public void modifySave(SaveModification saveModification) {
+        Codex codex = getCodex(saveModification);
+        new SaveModified(saveModification.getCodexId(),
+                         saveModification.getEntryId(),
+                         saveModification.getSave()).apply(codex, true);
+
+    }
 }

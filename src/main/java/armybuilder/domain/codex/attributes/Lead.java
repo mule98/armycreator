@@ -1,4 +1,8 @@
 package armybuilder.domain.codex.attributes;
 
-class Lead {
+import lombok.Data;
+
+@Data
+public class Lead {
+    private final int lead;
 }

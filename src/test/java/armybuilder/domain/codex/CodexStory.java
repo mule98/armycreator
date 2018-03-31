@@ -58,8 +58,8 @@ class CodexStory {
         setStrength(codexId, entryId, 3);
         setWoundPoint(codexId, entryId, 1);
         setAttacks(codexId, entryId, 1);
-//        setCommand(entryid,6);
-//        setSave(entryid,"6+");
+        setLead(codexId, entryId, 6);
+        setSave(codexId, entryId, "6+");
 //        setAddWeapon(entryid,getWeapon("Fusil Kroot"));
 //        setAddAptitude(entryid,getAptitude("Chasseur discret"));
 //        setAddKeyWord(entryid,etFactionKeyWord("T'au Empire"));
@@ -67,6 +67,46 @@ class CodexStory {
 //        setAddKeyWord(entryid,getKeyWord("Kroot Carnivores"));
 
 
+    }
+
+    @Test
+    void setSave() {
+        CodexId codex = createCodex(TAU_CODEX);
+        EntryId entry = createEntry(codex, KROOT_ENTRY);
+        setSave(codex, entry, "2+");
+
+        Save result = getCodex(TAU_CODEX).get()
+                                         .getEntries()
+                                         .stream()
+                                         .findFirst()
+                                         .get()
+                                         .getSave();
+        assertEquals(new Save("2+"), result);
+
+    }
+
+    private void setSave(CodexId codexId, EntryId entryId, String s) {
+        codexService.modifySave(new SaveModification(codexId, entryId, new Save(s)));
+    }
+
+    @Test
+    void setLead() {
+        CodexId codex = createCodex(TAU_CODEX);
+        EntryId entry = createEntry(codex, KROOT_ENTRY);
+        setLead(codex, entry, 2);
+
+        Lead result = getCodex(TAU_CODEX).get()
+                                         .getEntries()
+                                         .stream()
+                                         .findFirst()
+                                         .get()
+                                         .getLead();
+        assertEquals(new Lead(2), result);
+
+    }
+
+    private void setLead(CodexId codexId, EntryId entryId, int i) {
+        codexService.modifyLead(new LeadModification(codexId, entryId, new Lead(i)));
     }
 
     @Test
