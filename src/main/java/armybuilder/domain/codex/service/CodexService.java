@@ -1,10 +1,7 @@
 package armybuilder.domain.codex.service;
 
 import armybuilder.domain.codex.*;
-import armybuilder.domain.codex.commands.BallisticSkillModification;
-import armybuilder.domain.codex.commands.CodexCommand;
-import armybuilder.domain.codex.commands.CombatSkillModification;
-import armybuilder.domain.codex.commands.MovementModification;
+import armybuilder.domain.codex.commands.*;
 import armybuilder.domain.codex.events.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,5 +57,26 @@ public class CodexService {
         new BallisticSkillModified(bsCommand.getCodexId(), bsCommand.getEntryId(), bsCommand.getBallisticSkill()).apply(
                 codex,
                 true);
+    }
+
+    public void modifyStrength(StrengthModification strengthModification) {
+        Codex codex = getCodex(strengthModification);
+        new StrengthModified(strengthModification.getCodexId(),
+                             strengthModification.getEntryId(),
+                             strengthModification.getStrength()).apply(codex, true);
+    }
+
+    public void modifyWound(WoundModification woundModification) {
+        Codex codex = getCodex(woundModification);
+        new WoundModified(woundModification.getCodexId(),
+                          woundModification.getEntryId(),
+                          woundModification.getWound()).apply(codex, true);
+    }
+
+    public void modifyAttack(AttackModification attackModification) {
+        Codex codex = getCodex(attackModification);
+        new AttackModified(attackModification.getCodexId(),
+                           attackModification.getEntryId(),
+                           attackModification.getAttack()).apply(codex, true);
     }
 }

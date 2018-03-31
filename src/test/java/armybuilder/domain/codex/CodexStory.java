@@ -1,12 +1,8 @@
 package armybuilder.domain.codex;
 
 import armybuilder.domain.army.Name;
-import armybuilder.domain.codex.attributes.BallisticSkill;
-import armybuilder.domain.codex.attributes.Movement;
-import armybuilder.domain.codex.attributes.WeaponSkill;
-import armybuilder.domain.codex.commands.BallisticSkillModification;
-import armybuilder.domain.codex.commands.CombatSkillModification;
-import armybuilder.domain.codex.commands.MovementModification;
+import armybuilder.domain.codex.attributes.*;
+import armybuilder.domain.codex.commands.*;
 import armybuilder.domain.codex.reader.CodexReader;
 import armybuilder.domain.codex.service.CodexService;
 import armybuilder.domain.events.EventBus;
@@ -59,9 +55,9 @@ class CodexStory {
         setMovement(codexId, entryId, 8);
         setCombatSkill(codexId, entryId, "3+");
         setBalisticSkill(codexId, entryId, "4+");
-//        setStrength(entryid,3);
-//        setHealthPoint(entryid,1);
-//        setAttacks(entryid,1);
+        setStrength(codexId, entryId, 3);
+        setWoundPoint(codexId, entryId, 1);
+        setAttacks(codexId, entryId, 1);
 //        setCommand(entryid,6);
 //        setSave(entryid,"6+");
 //        setAddWeapon(entryid,getWeapon("Fusil Kroot"));
@@ -71,6 +67,65 @@ class CodexStory {
 //        setAddKeyWord(entryid,getKeyWord("Kroot Carnivores"));
 
 
+    }
+
+    @Test
+    void setAttacks() {
+        CodexId codex = createCodex(TAU_CODEX);
+        EntryId entry = createEntry(codex, KROOT_ENTRY);
+        setAttacks(codex, entry, 6);
+
+        Attack result = getCodex(TAU_CODEX).get()
+                                           .getEntries()
+                                           .stream()
+                                           .findFirst()
+                                           .get()
+                                           .getAttack();
+        assertEquals(new Attack(6), result);
+
+    }
+
+    private void setAttacks(CodexId codexId, EntryId entryId, int i) {
+        codexService.modifyAttack(new AttackModification(codexId, entryId, new Attack(i)));
+    }
+
+    @Test
+    void setWound() {
+        CodexId codex = createCodex(TAU_CODEX);
+        EntryId entry = createEntry(codex, KROOT_ENTRY);
+        setWoundPoint(codex, entry, 2);
+
+        Wound result = getCodex(TAU_CODEX).get()
+                                          .getEntries()
+                                          .stream()
+                                          .findFirst()
+                                          .get()
+                                          .getWound();
+        assertEquals(new Wound(2), result);
+
+    }
+
+    private void setWoundPoint(CodexId codexId, EntryId entryId, int i) {
+        codexService.modifyWound(new WoundModification(codexId, entryId, new Wound(i)));
+    }
+
+    @Test
+    void setStrength() {
+        CodexId codex = createCodex(TAU_CODEX);
+        EntryId entry = createEntry(codex, KROOT_ENTRY);
+        setStrength(codex, entry, 2);
+
+        Strength result = getCodex(TAU_CODEX).get()
+                                             .getEntries()
+                                             .stream()
+                                             .findFirst()
+                                             .get()
+                                             .getStrength();
+        assertEquals(new Strength(2), result);
+    }
+
+    private void setStrength(CodexId codexId, EntryId entryId, int i) {
+        codexService.modifyStrength(new StrengthModification(codexId, entryId, new Strength(i)));
     }
 
 

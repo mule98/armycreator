@@ -1,4 +1,9 @@
 package armybuilder.domain.codex.attributes;
 
-class Attack {
+import lombok.Data;
+
+@Data
+public class Attack {
+
+    private final int attack;
 }

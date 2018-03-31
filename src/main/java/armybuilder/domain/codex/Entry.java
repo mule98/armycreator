@@ -1,9 +1,7 @@
 package armybuilder.domain.codex;
 
 import armybuilder.domain.army.Name;
-import armybuilder.domain.codex.attributes.BallisticSkill;
-import armybuilder.domain.codex.attributes.Movement;
-import armybuilder.domain.codex.attributes.WeaponSkill;
+import armybuilder.domain.codex.attributes.*;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 import lombok.*;
 import lombok.experimental.Wither;
@@ -20,4 +18,7 @@ public class Entry {
     private Movement movement;
     private WeaponSkill weaponSkill;
     private BallisticSkill ballisticSkill;
+    private Strength strength;
+    private Wound wound;
+    private Attack attack;
 }

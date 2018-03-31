@@ -72,4 +72,18 @@ public class Codex {
         return entryModification(ballisticSkillModified,
                                  t -> t.withBallisticSkill(ballisticSkillModified.getBallisticSkill()));
     }
+
+    public Codex apply(StrengthModified strengthModified) {
+        return entryModification(strengthModified, entry -> entry.withStrength(strengthModified.getStrength()));
+    }
+
+    public Codex apply(WoundModified woundModified) {
+        return entryModification(woundModified, entry -> entry.withWound(woundModified.getWound()));
+    }
+
+    public Codex apply(AttackModified attackModified) {
+
+        return entryModification(attackModified, entry -> entry.withAttack(attackModified.getAttack()));
+
+    }
 }
