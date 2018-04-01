@@ -94,4 +94,18 @@ public class CodexService {
                          saveModification.getSave()).apply(codex, true);
 
     }
+
+    public WeaponId createWeapon(WeaponCreation weaponCreation) {
+        WeaponId weaponId = new WeaponId();
+        Codex codex = getCodex(weaponCreation);
+        new WeaponCreated(weaponCreation.getCodexId(), weaponCreation.getName(), weaponId).apply(codex, true);
+        return weaponId;
+    }
+
+    public void associateWeapon(AssociateWeapon associateWeapon) {
+        Codex codex = getCodex(associateWeapon);
+        new WeaponAssociated(associateWeapon.getCodexId(),
+                             associateWeapon.getEntryId(),
+                             associateWeapon.getWeaponId()).apply(codex, true);
+    }
 }

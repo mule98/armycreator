@@ -19,6 +19,7 @@ class CodexStory {
     private static final String TYRANID_ENTRY = "Tyranids";
     private static final String TAU_CODEX = "T'au";
     private static final String KROOT_ENTRY = "Kroot carnivores";
+    public static final String FUSIL_KROOT = "Fusil Kroot";
     private CodexService codexService;
     private CodexReader codexReader;
 
@@ -60,13 +61,60 @@ class CodexStory {
         setAttacks(codexId, entryId, 1);
         setLead(codexId, entryId, 6);
         setSave(codexId, entryId, "6+");
-//        setAddWeapon(entryid,getWeapon("Fusil Kroot"));
+        WeaponId weaponId = createWeapon(codexId, FUSIL_KROOT);
+        associateWeapon(codexId, entryId, weaponId);
 //        setAddAptitude(entryid,getAptitude("Chasseur discret"));
 //        setAddKeyWord(entryid,etFactionKeyWord("T'au Empire"));
 //        setAddKeyWord(entryid,getKeyWord("Infanterie"));
 //        setAddKeyWord(entryid,getKeyWord("Kroot Carnivores"));
 
 
+    }
+
+    @Test
+    void associateWeapon() {
+        CodexId codexId = createCodex(TAU_CODEX);
+        WeaponId weaponId = createWeapon(codexId, FUSIL_KROOT);
+        EntryId entry = createEntry(codexId, KROOT_ENTRY);
+
+        associateWeapon(codexId, entry, weaponId);
+
+        Weapon weapon = getCodex(TAU_CODEX).get()
+                                           .getEntries()
+                                           .findFirst()
+                                           .get()
+                                           .weapons()
+                                           .findFirst()
+                                           .get();
+        assertEquals(weaponId, weapon.getId());
+    }
+
+    private void associateWeapon(CodexId codexId, EntryId entryId, WeaponId weaponId) {
+        codexService.associateWeapon(new AssociateWeapon(codexId, entryId, weaponId));
+    }
+
+    @Test
+    void createWeapon() {
+        CodexId codexId = createCodex(TAU_CODEX);
+        WeaponId weaponId = createWeapon(codexId, FUSIL_KROOT);
+
+        assertNotNull(weaponId);
+
+        Codex codex = getCodex(TAU_CODEX).get();
+        Weapon weapon = codex.getWeapons()
+                             .findFirst()
+                             .get();
+        Name nameResult = weapon.getName();
+        assertEquals(weaponId, weapon.getId());
+        assertEquals(new Name(FUSIL_KROOT), nameResult);
+    }
+
+    private WeaponId createWeapon(CodexId codex, String name) {
+        return codexService.createWeapon(new WeaponCreation(codex, new Name(name)));
+    }
+
+    private Weapon getWeapon(CodexId codexId, String name) {
+        return null;
     }
 
     @Test
@@ -77,7 +125,6 @@ class CodexStory {
 
         Save result = getCodex(TAU_CODEX).get()
                                          .getEntries()
-                                         .stream()
                                          .findFirst()
                                          .get()
                                          .getSave();
@@ -97,7 +144,6 @@ class CodexStory {
 
         Lead result = getCodex(TAU_CODEX).get()
                                          .getEntries()
-                                         .stream()
                                          .findFirst()
                                          .get()
                                          .getLead();
@@ -117,7 +163,6 @@ class CodexStory {
 
         Attack result = getCodex(TAU_CODEX).get()
                                            .getEntries()
-                                           .stream()
                                            .findFirst()
                                            .get()
                                            .getAttack();
@@ -137,7 +182,6 @@ class CodexStory {
 
         Wound result = getCodex(TAU_CODEX).get()
                                           .getEntries()
-                                          .stream()
                                           .findFirst()
                                           .get()
                                           .getWound();
@@ -157,7 +201,6 @@ class CodexStory {
 
         Strength result = getCodex(TAU_CODEX).get()
                                              .getEntries()
-                                             .stream()
                                              .findFirst()
                                              .get()
                                              .getStrength();
@@ -214,7 +257,6 @@ class CodexStory {
     private Entry getEntry(CodexId codexId, EntryId entryId) {
         return codexReader.getCodex(codexId)
                           .getEntries()
-                          .stream()
                           .filter(entry -> entry.getId()
                                                 .equals(entryId))
                           .findFirst()
@@ -247,7 +289,6 @@ class CodexStory {
         Optional<Codex> codex = getCodex(TAU_CODEX);
         Entry result = codex.get()
                             .getEntries()
-                            .stream()
                             .findFirst()
                             .get();
         assertEquals(entryName,

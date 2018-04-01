@@ -26,7 +26,13 @@ public class Codex {
 
 
     //todo: Only ID and Name are discriminant in the set for replacement.
-    private Set<Entry> entries = Collections.unmodifiableSet(Collections.EMPTY_SET);
+    @Getter(AccessLevel.NONE)
+    private Set<Entry> entries = Collections.EMPTY_SET;
+    private Set<Weapon> weapons = Collections.EMPTY_SET;
+
+    public Stream<Entry> getEntries() {
+        return entries.stream();
+    }
 
     public Codex apply(CodexCreated codexCreated) {
         return withId(codexCreated.getId()).withName(codexCreated.getName());
@@ -93,5 +99,30 @@ public class Codex {
 
     public Codex apply(SaveModified saveModified) {
         return entryModification(saveModified, entry -> entry.withSave(saveModified.getSave()));
+    }
+
+    public Stream<Weapon> getWeapons() {
+        return weapons.stream();
+    }
+
+    public Codex apply(WeaponCreated weaponCreated) {
+        Set<Weapon> weapons = new HashSet<>(this.weapons);
+        weapons.add(new Weapon().withId(weaponCreated.getWeaponId())
+                                .withName(weaponCreated.getName()));
+        return withWeapons(Collections.unmodifiableSet(weapons));
+    }
+
+    public Codex apply(WeaponAssociated weaponAssociated) {
+        Weapon weapon = getWeapon(weaponAssociated.getWeaponId());
+        Set<Weapon> weaponSet = new HashSet<>(weapons);
+        weaponSet.add(weapon);
+        return entryModification(weaponAssociated, entry -> entry.withWeapon(weaponSet));
+    }
+
+    private Weapon getWeapon(WeaponId weaponId) {
+        return getWeapons().filter(t -> t.getId()
+                                         .equals(weaponId))
+                           .findFirst()
+                           .orElseThrow(RuntimeException::new);
     }
 }

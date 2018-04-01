@@ -6,6 +6,10 @@ import jdk.nashorn.internal.ir.annotations.Immutable;
 import lombok.*;
 import lombok.experimental.Wither;
 
+import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Stream;
+
 @Wither
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -23,4 +27,10 @@ public class Entry {
     private Attack attack;
     private Lead lead;
     private Save save;
+    @Getter(AccessLevel.NONE)
+    private Set<Weapon> weapon = Collections.EMPTY_SET;
+
+    public Stream<Weapon> weapons() {
+        return weapon.stream();
+    }
 }
