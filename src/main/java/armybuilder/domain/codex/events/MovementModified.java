@@ -20,7 +20,7 @@ public class MovementModified extends CodexEntryModified {
 
     @Override
     protected Codex applyChange(Codex element) {
-        return element.apply(this);
+        return element.modifyMovement(this);
     }
 
 }

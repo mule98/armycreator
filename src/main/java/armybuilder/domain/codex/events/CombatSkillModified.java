@@ -5,8 +5,10 @@ import armybuilder.domain.codex.CodexId;
 import armybuilder.domain.codex.EntryId;
 import armybuilder.domain.codex.attributes.WeaponSkill;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class CombatSkillModified extends CodexEntryModified {
     private final WeaponSkill weaponSkill;
 
@@ -17,6 +19,6 @@ public class CombatSkillModified extends CodexEntryModified {
 
     @Override
     protected Codex applyChange(Codex element) {
-        return element.apply(this);
+        return element.modifyCombatSkill(this);
     }
 }

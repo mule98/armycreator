@@ -5,8 +5,10 @@ import armybuilder.domain.codex.CodexId;
 import armybuilder.domain.codex.EntryId;
 import armybuilder.domain.codex.attributes.Wound;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class WoundModified extends CodexEntryModified {
     private final Wound wound;
 
@@ -17,6 +19,6 @@ public class WoundModified extends CodexEntryModified {
 
     @Override
     protected Codex applyChange(Codex element) {
-        return element.apply(this);
+        return element.modifyWound(this);
     }
 }

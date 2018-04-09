@@ -5,8 +5,10 @@ import armybuilder.domain.codex.CodexId;
 import armybuilder.domain.codex.EntryId;
 import armybuilder.domain.codex.WeaponId;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class WeaponAssociated extends CodexEntryModified {
     private final WeaponId weaponId;
 
@@ -18,6 +20,6 @@ public class WeaponAssociated extends CodexEntryModified {
 
     @Override
     protected Codex applyChange(Codex element) {
-        return element.apply(this);
+        return element.associateWeapon(this);
     }
 }

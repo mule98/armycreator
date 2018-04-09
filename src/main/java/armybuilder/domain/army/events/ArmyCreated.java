@@ -6,9 +6,11 @@ import armybuilder.domain.army.Name;
 import armybuilder.domain.events.Event;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Immutable
 @Data
+@EqualsAndHashCode(callSuper = true)
 public final class ArmyCreated extends Event<ArmyId, Army> {
     final ArmyId id;
     final Name name;

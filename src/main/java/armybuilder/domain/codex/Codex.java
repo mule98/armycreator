@@ -28,13 +28,16 @@ public class Codex {
     //todo: Only ID and Name are discriminant in the set for replacement.
     @Getter(AccessLevel.NONE)
     private Set<Entry> entries = Collections.EMPTY_SET;
+    @Getter(AccessLevel.NONE)
     private Set<Weapon> weapons = Collections.EMPTY_SET;
+    @Getter(AccessLevel.NONE)
+    private Set<Aptitude> aptitudes = Collections.EMPTY_SET;
 
     public Stream<Entry> getEntries() {
         return entries.stream();
     }
 
-    public Codex apply(CodexCreated codexCreated) {
+    public Codex create(CodexCreated codexCreated) {
         return withId(codexCreated.getId()).withName(codexCreated.getName());
     }
 
@@ -50,7 +53,7 @@ public class Codex {
         return this.withEntries(Collections.unmodifiableSet(collect));
     }
 
-    public Codex apply(MovementModified movementModified) {
+    public Codex modifyMovement(MovementModified movementModified) {
         return entryModification(movementModified, t -> t.withMovement(movementModified.getMovement()));
     }
 
@@ -62,7 +65,7 @@ public class Codex {
                       .orElseThrow(RuntimeException::new);
     }
 
-    public Codex apply(CombatSkillModified combatSkillModified) {
+    public Codex modifyCombatSkill(CombatSkillModified combatSkillModified) {
         return entryModification(combatSkillModified, t -> t.withWeaponSkill(combatSkillModified.getWeaponSkill()));
     }
 
@@ -74,30 +77,30 @@ public class Codex {
         return withEntries(Collections.unmodifiableSet(entries));
     }
 
-    public Codex apply(BallisticSkillModified ballisticSkillModified) {
+    public Codex modifiyBallisticSkill(BallisticSkillModified ballisticSkillModified) {
         return entryModification(ballisticSkillModified,
                                  t -> t.withBallisticSkill(ballisticSkillModified.getBallisticSkill()));
     }
 
-    public Codex apply(StrengthModified strengthModified) {
+    public Codex modifyStrength(StrengthModified strengthModified) {
         return entryModification(strengthModified, entry -> entry.withStrength(strengthModified.getStrength()));
     }
 
-    public Codex apply(WoundModified woundModified) {
+    public Codex modifyWound(WoundModified woundModified) {
         return entryModification(woundModified, entry -> entry.withWound(woundModified.getWound()));
     }
 
-    public Codex apply(AttackModified attackModified) {
+    public Codex modifyAttack(AttackModified attackModified) {
 
         return entryModification(attackModified, entry -> entry.withAttack(attackModified.getAttack()));
 
     }
 
-    public Codex apply(LeadModified leadModified) {
+    public Codex modifyLead(LeadModified leadModified) {
         return entryModification(leadModified, entry -> entry.withLead(leadModified.getLead()));
     }
 
-    public Codex apply(SaveModified saveModified) {
+    public Codex modifySave(SaveModified saveModified) {
         return entryModification(saveModified, entry -> entry.withSave(saveModified.getSave()));
     }
 
@@ -105,18 +108,16 @@ public class Codex {
         return weapons.stream();
     }
 
-    public Codex apply(WeaponCreated weaponCreated) {
+    public Codex createWeapon(WeaponCreated weaponCreated) {
         Set<Weapon> weapons = new HashSet<>(this.weapons);
         weapons.add(new Weapon().withId(weaponCreated.getWeaponId())
                                 .withName(weaponCreated.getName()));
         return withWeapons(Collections.unmodifiableSet(weapons));
     }
 
-    public Codex apply(WeaponAssociated weaponAssociated) {
+    public Codex associateWeapon(WeaponAssociated weaponAssociated) {
         Weapon weapon = getWeapon(weaponAssociated.getWeaponId());
-        Set<Weapon> weaponSet = new HashSet<>(weapons);
-        weaponSet.add(weapon);
-        return entryModification(weaponAssociated, entry -> entry.withWeapon(weaponSet));
+        return entryModification(weaponAssociated, entry -> entry.addWeapon(weapon));
     }
 
     private Weapon getWeapon(WeaponId weaponId) {
@@ -124,5 +125,27 @@ public class Codex {
                                          .equals(weaponId))
                            .findFirst()
                            .orElseThrow(RuntimeException::new);
+    }
+
+    public Codex createAptitude(AptitudeCreated aptitudeCreated) {
+        Set<Aptitude> workingAptitudes = new HashSet<>(aptitudes);
+        workingAptitudes.add(new Aptitude(aptitudeCreated.getAptitudeId(), aptitudeCreated.getName()));
+        return withAptitudes(workingAptitudes);
+    }
+
+    public Codex associateAptitude(final AptitudeAssociated aptitudeAssociated) {
+        Aptitude aptitude = getAptitude(aptitudeAssociated.getAptitudeId());
+        return entryModification(aptitudeAssociated, entry -> entry.addAptitude(aptitude));
+    }
+
+    private Aptitude getAptitude(AptitudeId aptitudeId) {
+        return aptitudes.stream()
+                        .filter(t -> t.id.equals(aptitudeId))
+                        .findFirst()
+                        .orElseThrow(RuntimeException::new);
+    }
+
+    public Stream<Aptitude> getAptitudes() {
+        return aptitudes.stream();
     }
 }

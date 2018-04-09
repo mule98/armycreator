@@ -5,8 +5,10 @@ import armybuilder.domain.codex.CodexId;
 import armybuilder.domain.codex.EntryId;
 import armybuilder.domain.codex.attributes.Lead;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class LeadModified extends CodexEntryModified {
     private final Lead lead;
 
@@ -17,6 +19,6 @@ public class LeadModified extends CodexEntryModified {
 
     @Override
     protected Codex applyChange(Codex element) {
-        return element.apply(this);
+        return element.modifyLead(this);
     }
 }

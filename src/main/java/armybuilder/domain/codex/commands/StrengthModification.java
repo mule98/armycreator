@@ -4,8 +4,10 @@ import armybuilder.domain.codex.CodexId;
 import armybuilder.domain.codex.EntryId;
 import armybuilder.domain.codex.attributes.Strength;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class StrengthModification extends CodexEntryCommand {
     private final Strength strength;
 

@@ -108,4 +108,18 @@ public class CodexService {
                              associateWeapon.getEntryId(),
                              associateWeapon.getWeaponId()).apply(codex, true);
     }
+
+    public AptitudeId createAptitude(CreateAptitude createAptitude) {
+        AptitudeId aptitudeId = new AptitudeId();
+        new AptitudeCreated(createAptitude.getCodexId(), aptitudeId, createAptitude.getName()).apply(getCodex(
+                createAptitude.getCodexId()), true);
+        return aptitudeId;
+    }
+
+    public void associateAptitude(AssociateAptitude associateAptitude) {
+        Codex codex = getCodex(associateAptitude.getCodexId());
+        new AptitudeAssociated(associateAptitude.getCodexId(),
+                               associateAptitude.getEntryId(),
+                               associateAptitude.getAptitudeId()).apply(codex, true);
+    }
 }

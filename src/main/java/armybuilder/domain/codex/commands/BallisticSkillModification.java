@@ -4,8 +4,10 @@ import armybuilder.domain.codex.CodexId;
 import armybuilder.domain.codex.EntryId;
 import armybuilder.domain.codex.attributes.BallisticSkill;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class BallisticSkillModification extends CodexEntryCommand {
     private final BallisticSkill ballisticSkill;
 

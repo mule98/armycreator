@@ -10,18 +10,102 @@ import armybuilder.domain.events.EventStore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CodexStory {
 
+    public static final String FUSIL_KROOT = "Fusil Kroot";
     private static final String TYRANID_ENTRY = "Tyranids";
     private static final String TAU_CODEX = "T'au";
     private static final String KROOT_ENTRY = "Kroot carnivores";
-    public static final String FUSIL_KROOT = "Fusil Kroot";
     private CodexService codexService;
     private CodexReader codexReader;
+
+    @Test
+    void associateAptitude() {
+        CodexId codexId = createCodex(TAU_CODEX);
+        EntryId entryId = createEntry(codexId, KROOT_ENTRY);
+        AptitudeId aptitudeId = createAptitude(codexId, "Chasseur discret");
+        associateAptitude(codexId, entryId, aptitudeId);
+        Aptitude aptitude = getCodex(TAU_CODEX).get()
+                                               .getEntries()
+                                               .findFirst()
+                                               .get()
+                                               .aptitudes()
+                                               .findFirst()
+                                               .get();
+
+        assertNotNull(aptitude);
+        assertEquals(aptitudeId, aptitude.id);
+    }
+
+    @Test
+    void associateTwoAptitudeToTwoEntry() {
+        CodexId codexId = createCodex(TAU_CODEX);
+        EntryId entryId = createEntry(codexId, KROOT_ENTRY);
+        EntryId entryId2 = createEntry(codexId, "Riptide");
+        AptitudeId aptitudeId = createAptitude(codexId, "Chasseur discret");
+        AptitudeId aptitudeId2 = createAptitude(codexId, "Kau yon");
+        associateAptitude(codexId, entryId, aptitudeId);
+        associateAptitude(codexId, entryId2, aptitudeId2);
+        List<Entry> entries = getCodex(TAU_CODEX).get()
+                                                 .getEntries()
+                                                 .collect(Collectors.toList());
+        Entry entry1 = entries.get(1);
+        Aptitude aptitude = entry1.aptitudes()
+                                  .findFirst()
+                                  .get();
+
+        assertEquals(1,
+                     entry1.aptitudes()
+                           .count());
+
+        Entry entry2 = entries.get(0);
+        Aptitude aptitude2 = entry2.aptitudes()
+                                   .findFirst()
+                                   .get();
+
+
+        assertEquals(1,
+                     entry2.aptitudes()
+                           .count());
+
+
+        assertNotNull(aptitude);
+        assertEquals(aptitudeId, aptitude.id);
+        assertEquals(aptitudeId2, aptitude2.id);
+    }
+
+    @Test
+    void associateAptitudeTwice() {
+        CodexId codexId = createCodex(TAU_CODEX);
+        EntryId entryId = createEntry(codexId, KROOT_ENTRY);
+        AptitudeId aptitudeId = createAptitude(codexId, "Chasseur discret");
+        associateAptitude(codexId, entryId, aptitudeId);
+        associateAptitude(codexId, entryId, aptitudeId);
+
+        assertEquals(1,
+                     getCodex(TAU_CODEX).get()
+                                        .getEntries()
+                                        .findFirst()
+                                        .get()
+                                        .aptitudes()
+                                        .count());
+        Aptitude aptitude = getCodex(TAU_CODEX).get()
+                                               .getEntries()
+                                               .findFirst()
+                                               .get()
+                                               .aptitudes()
+                                               .findFirst()
+                                               .get();
+
+        assertNotNull(aptitude);
+        assertEquals(aptitudeId, aptitude.id);
+    }
 
     @Test
     void setMovement() {
@@ -63,12 +147,58 @@ class CodexStory {
         setSave(codexId, entryId, "6+");
         WeaponId weaponId = createWeapon(codexId, FUSIL_KROOT);
         associateWeapon(codexId, entryId, weaponId);
-//        setAddAptitude(entryid,getAptitude("Chasseur discret"));
+        AptitudeId aptitudeId = createAptitude(codexId, "Chasseur discret");
+        associateAptitude(codexId, entryId, aptitudeId);
 //        setAddKeyWord(entryid,etFactionKeyWord("T'au Empire"));
 //        setAddKeyWord(entryid,getKeyWord("Infanterie"));
 //        setAddKeyWord(entryid,getKeyWord("Kroot Carnivores"));
 
 
+    }
+
+    private void associateAptitude(CodexId codexId, EntryId entryId, AptitudeId aptitudeId) {
+        codexService.associateAptitude(new AssociateAptitude(codexId, entryId, aptitudeId));
+    }
+
+
+    @Test
+    void associateWeaponTwice() {
+        CodexId codexId = createCodex(TAU_CODEX);
+        WeaponId weaponId = createWeapon(codexId, FUSIL_KROOT);
+        EntryId entry = createEntry(codexId, KROOT_ENTRY);
+
+        associateWeapon(codexId, entry, weaponId);
+        associateWeapon(codexId, entry, weaponId);
+
+        long count = getCodex(TAU_CODEX).get()
+                                        .getEntries()
+                                        .findFirst()
+                                        .get()
+                                        .weapons()
+                                        .count();
+
+        assertEquals(1, count);
+    }
+
+    @Test
+    void createAptitude() {
+        CodexId codexId = createCodex(TAU_CODEX);
+        EntryId entryId = createEntry(codexId, KROOT_ENTRY);
+        String name = "Chasseur discret";
+        AptitudeId chasseur_discretId = createAptitude(codexId, name);
+        assertNotNull(chasseur_discretId);
+        Aptitude chasseur_discret = getCodex(TAU_CODEX).get()
+                                                       .getAptitudes()
+                                                       .findFirst()
+                                                       .get();
+        assertEquals(chasseur_discretId, chasseur_discret.id);
+        assertEquals(new Name(name), chasseur_discret.name);
+
+
+    }
+
+    private AptitudeId createAptitude(CodexId codexId, String name) {
+        return codexService.createAptitude(new CreateAptitude(codexId, new Name(name)));
     }
 
     @Test
@@ -87,6 +217,68 @@ class CodexStory {
                                            .findFirst()
                                            .get();
         assertEquals(weaponId, weapon.getId());
+    }
+
+    @Test
+    void associateTwoWeapons() {
+        CodexId codexId = createCodex(TAU_CODEX);
+        WeaponId weaponId = createWeapon(codexId, FUSIL_KROOT);
+        WeaponId weapon2Id = createWeapon(codexId, "Railgun");
+        EntryId entry = createEntry(codexId, KROOT_ENTRY);
+
+        associateWeapon(codexId, entry, weaponId);
+        associateWeapon(codexId, entry, weapon2Id);
+
+        List<Weapon> weapons = getCodex(TAU_CODEX).get()
+                                                  .getEntries()
+                                                  .findFirst()
+                                                  .get()
+                                                  .weapons()
+                                                  .collect(Collectors.toList());
+        assertEquals(2, weapons.size());
+        assertEquals(weaponId,
+                     weapons.get(1)
+                            .getId());
+        assertEquals(weapon2Id,
+                     weapons.get(0)
+                            .getId());
+    }
+
+    @Test
+    void associateTwoWeaponsTwoEntries() {
+        CodexId codexId = createCodex(TAU_CODEX);
+        WeaponId weaponId = createWeapon(codexId, FUSIL_KROOT);
+        WeaponId weapon2Id = createWeapon(codexId, "Railgun");
+        EntryId entry = createEntry(codexId, KROOT_ENTRY);
+        EntryId entry2 = createEntry(codexId, "Shas'ui");
+
+        associateWeapon(codexId, entry, weaponId);
+        associateWeapon(codexId, entry2, weapon2Id);
+        List<Weapon> weapons = getCodex(TAU_CODEX).get()
+                                                  .getEntries()
+                                                  .filter(t -> t.getId()
+                                                                .equals(entry))
+                                                  .findFirst()
+                                                  .get()
+                                                  .weapons()
+                                                  .collect(Collectors.toList());
+        List<Weapon> weapons2 = getCodex(TAU_CODEX).get()
+                                                   .getEntries()
+                                                   .filter(t -> t.getId()
+                                                                 .equals(entry2))
+                                                   .findFirst()
+                                                   .get()
+                                                   .weapons()
+                                                   .collect(Collectors.toList());
+
+        assertEquals(1, weapons.size());
+        assertEquals(weaponId,
+                     weapons.get(0)
+                            .getId());
+        assertEquals(1, weapons2.size());
+        assertEquals(weapon2Id,
+                     weapons2.get(0)
+                             .getId());
     }
 
     private void associateWeapon(CodexId codexId, EntryId entryId, WeaponId weaponId) {
@@ -114,7 +306,17 @@ class CodexStory {
     }
 
     private Weapon getWeapon(CodexId codexId, String name) {
-        return null;
+        return getCodex(codexId).getWeapons()
+                                .filter(t -> t.getName()
+                                              .equals(name))
+                                .findFirst()
+                                .get();
+    }
+
+    private Codex getCodex(CodexId codexId) {
+        return codexReader.getCodex(codexId
+
+        );
     }
 
     @Test
@@ -233,7 +435,7 @@ class CodexStory {
 
 
     @Test
-    void modifyEntryCombatSkill() {
+    void modifyEntryWeaponSkill() {
         CodexId codexId = createCodex(TAU_CODEX);
 
         EntryId entryId = createEntry(codexId, KROOT_ENTRY);

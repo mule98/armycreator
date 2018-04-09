@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.Wither;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -28,9 +29,28 @@ public class Entry {
     private Lead lead;
     private Save save;
     @Getter(AccessLevel.NONE)
-    private Set<Weapon> weapon = Collections.EMPTY_SET;
+    private Set<Weapon> weapons = Collections.EMPTY_SET;
+    @Getter(AccessLevel.NONE)
+    @Wither(AccessLevel.PUBLIC)
+    private Set<Aptitude> aptitudes = Collections.EMPTY_SET;
 
     public Stream<Weapon> weapons() {
-        return weapon.stream();
+        return weapons.stream();
+    }
+
+    public Stream<Aptitude> aptitudes() {
+        return aptitudes.stream();
+    }
+
+    public Entry addAptitude(Aptitude aptitude) {
+        Set<Aptitude> entries = new HashSet<>(aptitudes);
+        entries.add(aptitude);
+        return withAptitudes(Collections.unmodifiableSet(entries));
+    }
+
+    public Entry addWeapon(Weapon weapon) {
+        HashSet<Weapon> newWeapons = new HashSet<>(weapons);
+        newWeapons.add(weapon);
+        return withWeapons(Collections.unmodifiableSet(newWeapons));
     }
 }

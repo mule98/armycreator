@@ -4,8 +4,10 @@ import armybuilder.domain.codex.CodexId;
 import armybuilder.domain.codex.EntryId;
 import armybuilder.domain.codex.WeaponId;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class AssociateWeapon extends CodexEntryCommand {
     private final WeaponId weaponId;
 

@@ -7,12 +7,11 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class WeaponCreation extends CodexCommand {
+public class CreateAptitude extends CodexCommand {
     private final Name name;
 
-    public WeaponCreation(CodexId codex, Name name) {
-        super(codex);
-
+    public CreateAptitude(CodexId codexId, Name name) {
+        super(codexId);
         this.name = name;
     }
 }
